@@ -1,4 +1,9 @@
-Data/*
+Data/*.txt
+Data/FOOOF_Data/*
+Data/Preprocessed/*
+Data/Preprocessed_ordered_data/*
+Data/RawData/*
+!Data/RawData/.gitignore
 
 Präregistrierung/*
 
