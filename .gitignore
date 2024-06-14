@@ -1,0 +1,17 @@
+Data/*
+
+Präregistrierung/*
+
+ValidationSet/*
+
+.Rhistory
+
+*.Rproj
+
+.Rproj.user/
+
+__pycache__/
+
+*.docx
+
+Test_Partial_Correlations.m
