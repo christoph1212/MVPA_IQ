@@ -4,6 +4,9 @@ Data/Preprocessed/*
 Data/Preprocessed_ordered_data/*
 Data/RawData/*
 !Data/RawData/.gitignore
+Data/Ready_for_DDTBOX/*
+
+*.asv
 
 Präregistrierung/*
 
