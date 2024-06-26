@@ -384,7 +384,7 @@ parfor subj = 1:ceil(length(Participants))
                 end
 
             end % for condition         
-            savetofile(Log, fullfile(LogFolder, [i_participant '_run_' num2str(i_run) '_Log_power_butter_no_notch.mat']));
+            savetofile(Log, fullfile(LogFolder, [i_participant '_run_' num2str(i_run) '_Log.mat']));
 
         catch error
             ErrorMessage = string(error.message);
