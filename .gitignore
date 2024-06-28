@@ -6,6 +6,8 @@ Data/RawData/*
 !Data/RawData/.gitignore
 Data/Ready_for_DDTBOX/*
 
+DataValidation/*
+
 *.asv
 
 Präregistrierung/*
