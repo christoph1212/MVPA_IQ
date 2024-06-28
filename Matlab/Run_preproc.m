@@ -14,3 +14,5 @@ NrSubsets = '1';
 ThisSubset = '1';
 
 preproc(NrSubsets, ThisSubset)
+
+preproc_validationset(NrSubsets, ThisSubset)

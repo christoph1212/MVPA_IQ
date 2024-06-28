@@ -5,8 +5,8 @@ function preproc(NrSubsets, ThisSubset)
 % directories.
 %
 % Input:
-% (1) NrSubsets = ###
-% (2) ThisSubset = ###
+% (1) NrSubsets = default 1
+% (2) ThisSubset = default 1
 %
 % Output:
 % (1) .csv file with the spectral power data for each participant from 0.5 to
@@ -227,7 +227,7 @@ parfor subj = 1:ceil(length(Participants))
                 try
                 %% 7. Remove Bad Data with ASR                
                 Clean_Segment_Mask = ones(EEG_work.pnts,1);
-                Log.(strcat('Clean_Segments_', i_cond,'_T1')) = length(Clean_Segment_Mask); % KP Why is this here? Sum here equals the length, also later Why calling it clean if it is actually the total Nr?
+                Log.(strcat('Clean_Segments_', i_cond,'_T1')) = length(Clean_Segment_Mask);
                 EEG_Channels = ismember({EEG_work.chanlocs.type}, {'EEG'});
                 EEG_subset = pop_select( EEG_work, 'channel', find(EEG_Channels));
                 EEG_fil = pop_eegfiltnew(EEG_subset, 'locutoff', 1, 'hicutoff', []);
@@ -315,7 +315,7 @@ parfor subj = 1:ceil(length(Participants))
                 % Aftefact 2
                 BadEpoch = [];
                 BadEpochs_Mask = zeros(EEG_work.trials,1);                    
-                window_length = EEG_work.srate*0.1;
+                window_length = round(EEG_work.srate*0.1);
                 for itrial = 1:(EEG_work.trials)
                     for iIncr = 1:(EEG_work.pnts - window_length) 
                         if any(abs(max(EEG_work.data(:,iIncr:iIncr + window_length,itrial)) - min(EEG_work.data(:,iIncr:iIncr + window_length,itrial))) > 200)
