@@ -124,8 +124,8 @@ for i_signal = ["Total", "Aperiodic", "Periodic"]
         end
 
         % Save data in location 'Ready for DDTBox'
-        if ~(isfolder(fullfile(OutputFolderEEG, i_signal, i_cond)))
-            mkdir(fullfile(OutputFolderEEG, i_signal, i_cond))
+        if ~(isfolder(fullfile(OutputFolderEEG, 'Full_Sample', i_signal, i_cond)))
+            mkdir(fullfile(OutputFolderEEG, 'Full_Sample', i_signal, i_cond))
         end
         if ~(isfolder(fullfile(OutputFolderEEG, 'Female', i_signal, i_cond)))
             mkdir(fullfile(OutputFolderEEG, 'Female', i_signal, i_cond))
@@ -133,7 +133,7 @@ for i_signal = ["Total", "Aperiodic", "Periodic"]
         if ~(isfolder(fullfile(OutputFolderEEG, 'Male', i_signal, i_cond)))
             mkdir(fullfile(OutputFolderEEG, 'Male', i_signal, i_cond))
         end
-        save(fullfile(OutputFolderEEG, i_signal, i_cond, 'eeg_sorted_cond'), 'eeg_sorted_cond');
+        save(fullfile(OutputFolderEEG, 'Full_Sample', i_signal, i_cond, 'eeg_sorted_cond'), 'eeg_sorted_cond');
         save(fullfile(OutputFolderEEG, 'Female', i_signal, i_cond, 'eeg_sorted_cond'), 'eeg_sorted_cond_female');
         save(fullfile(OutputFolderEEG, 'Male', i_signal, i_cond, 'eeg_sorted_cond'), 'eeg_sorted_cond_male');
     end % for i_cond
@@ -235,8 +235,8 @@ for i_param = ["Exponent", "Offset"]
         clear params_all params_fem params_male
 
         % Save data in location 'Ready for DDTBox'
-        if ~(isfolder(fullfile(OutputFolderEEG, 'Aperiodic', 'Parameters', i_param, i_cond)))
-            mkdir(fullfile(OutputFolderEEG, 'Aperiodic', 'Parameters', i_param, i_cond))
+        if ~(isfolder(fullfile(OutputFolderEEG, 'Full_Sample', 'Aperiodic', 'Parameters', i_param, i_cond)))
+            mkdir(fullfile(OutputFolderEEG, 'Full_Sample', 'Aperiodic', 'Parameters', i_param, i_cond))
         end
         if ~(isfolder(fullfile(OutputFolderEEG, 'Female', 'Aperiodic', 'Parameters', i_param, i_cond)))
             mkdir(fullfile(OutputFolderEEG, 'Female', 'Aperiodic', 'Parameters', i_param, i_cond))
@@ -244,7 +244,7 @@ for i_param = ["Exponent", "Offset"]
         if ~(isfolder(fullfile(OutputFolderEEG, 'Male', 'Aperiodic', 'Parameters', i_param, i_cond)))
             mkdir(fullfile(OutputFolderEEG, 'Male', 'Aperiodic', 'Parameters', i_param, i_cond))
         end
-        save(fullfile(OutputFolderEEG, 'Aperiodic', 'Parameters', i_param, i_cond, 'eeg_sorted_cond'), 'eeg_sorted_cond');
+        save(fullfile(OutputFolderEEG, 'Full_Sample', 'Aperiodic', 'Parameters', i_param, i_cond, 'eeg_sorted_cond'), 'eeg_sorted_cond');
         save(fullfile(OutputFolderEEG, 'Female', 'Aperiodic', 'Parameters', i_param, i_cond, 'eeg_sorted_cond'), 'eeg_sorted_cond_female');
         save(fullfile(OutputFolderEEG, 'Male', 'Aperiodic', 'Parameters', i_param, i_cond, 'eeg_sorted_cond'), 'eeg_sorted_cond_male');
     end % for i_cond

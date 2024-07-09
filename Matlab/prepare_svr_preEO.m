@@ -5,10 +5,10 @@ temp_pre_EO = Data_sorted_pre_EO.(behav{i_behav});
 
 % Add files to DDTBox-readable format & save
 SVR_labels = {temp_pre_EO};
-pre_EO_file_name = fullfile(OutputFolderBehav, folders(i_behav), 'Pre', 'EyesOpen', 'eeg_sorted_cond_regress_sorted_cond');
+pre_EO_file_name = fullfile(OutputFolderBehav, 'Full_Sample', folders(i_behav), 'Pre', 'EyesOpen', 'eeg_sorted_cond_regress_sorted_cond');
 
-if ~(isfolder(fullfile(OutputFolderBehav, folders(i_behav), 'Pre', 'EyesOpen')))
-    mkdir(fullfile(OutputFolderBehav, folders(i_behav), 'Pre', 'EyesOpen'))
+if ~(isfolder(fullfile(OutputFolderBehav, 'Full_Sample', folders(i_behav), 'Pre', 'EyesOpen')))
+    mkdir(fullfile(OutputFolderBehav, 'Full_Sample', folders(i_behav), 'Pre', 'EyesOpen'))
 end
 
 save(pre_EO_file_name, 'SVR_labels');

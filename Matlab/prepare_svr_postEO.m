@@ -3,10 +3,10 @@ function prepare_svr_postEO(i_behav, behav, folders, Data_sorted_post_EO, Data_s
 temp_post_EO = Data_sorted_post_EO.(behav{i_behav}); 
 
 SVR_labels = {temp_post_EO};
-post_EO_file_name = fullfile(OutputFolderBehav, folders(i_behav), 'Post', 'EyesOpen', 'eeg_sorted_cond_regress_sorted_cond');
+post_EO_file_name = fullfile(OutputFolderBehav, 'Full_Sample', folders(i_behav), 'Post', 'EyesOpen', 'eeg_sorted_cond_regress_sorted_cond');
 
-if ~(isfolder(fullfile(OutputFolderBehav, folders(i_behav), 'Post', 'EyesOpen')))
-    mkdir(fullfile(OutputFolderBehav, folders(i_behav), 'Post', 'EyesOpen'))
+if ~(isfolder(fullfile(OutputFolderBehav, 'Full_Sample', folders(i_behav), 'Post', 'EyesOpen')))
+    mkdir(fullfile(OutputFolderBehav, 'Full_Sample', folders(i_behav), 'Post', 'EyesOpen'))
 end  
 
 save(post_EO_file_name, 'SVR_labels');
