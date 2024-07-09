@@ -98,7 +98,7 @@ for i_signal = ["Total", "Aperiodic", "Periodic"]
                 double_fem(:,:,idxFem) = [temp(:,:)'];
                 eeg_sorted_cond_female = {double_fem};
                 idxFem = idxFem + 1;
-            else          
+            elseif strcmp(Data.Gender(idx), "male")
                 double_male(:,:,idxMale) = [temp(:,:)'];
                 eeg_sorted_cond_male = {double_male};
                 idxMale = idxMale + 1;
@@ -134,8 +134,12 @@ for i_signal = ["Total", "Aperiodic", "Periodic"]
             mkdir(fullfile(OutputFolderEEG, 'Male', i_signal, i_cond))
         end
         save(fullfile(OutputFolderEEG, 'Full_Sample', i_signal, i_cond, 'eeg_sorted_cond'), 'eeg_sorted_cond');
-        save(fullfile(OutputFolderEEG, 'Female', i_signal, i_cond, 'eeg_sorted_cond'), 'eeg_sorted_cond_female');
-        save(fullfile(OutputFolderEEG, 'Male', i_signal, i_cond, 'eeg_sorted_cond'), 'eeg_sorted_cond_male');
+
+        eeg_sorted_cond = eeg_sorted_cond_female;
+        save(fullfile(OutputFolderEEG, 'Female', i_signal, i_cond, 'eeg_sorted_cond'), 'eeg_sorted_cond');
+
+        eeg_sorted_cond = eeg_sorted_cond_male;
+        save(fullfile(OutputFolderEEG, 'Male', i_signal, i_cond, 'eeg_sorted_cond'), 'eeg_sorted_cond');
     end % for i_cond
 end % for i_signal
 
@@ -225,7 +229,7 @@ for i_param = ["Exponent", "Offset"]
                 params_fem(:,:,idxFem) = [params(:,:)'];
                 eeg_sorted_cond_female = {params_fem};
                 idxFem = idxFem + 1;
-            else          
+            elseif strcmp(Data.Gender(idx), "male")
                 params_male(:,:,idxMale) = [params(:,:)'];
                 eeg_sorted_cond_male = {params_male};
                 idxMale = idxMale + 1;
@@ -245,8 +249,12 @@ for i_param = ["Exponent", "Offset"]
             mkdir(fullfile(OutputFolderEEG, 'Male', 'Aperiodic', 'Parameters', i_param, i_cond))
         end
         save(fullfile(OutputFolderEEG, 'Full_Sample', 'Aperiodic', 'Parameters', i_param, i_cond, 'eeg_sorted_cond'), 'eeg_sorted_cond');
-        save(fullfile(OutputFolderEEG, 'Female', 'Aperiodic', 'Parameters', i_param, i_cond, 'eeg_sorted_cond'), 'eeg_sorted_cond_female');
-        save(fullfile(OutputFolderEEG, 'Male', 'Aperiodic', 'Parameters', i_param, i_cond, 'eeg_sorted_cond'), 'eeg_sorted_cond_male');
+
+        eeg_sorted_cond = eeg_sorted_cond_female;
+        save(fullfile(OutputFolderEEG, 'Female', 'Aperiodic', 'Parameters', i_param, i_cond, 'eeg_sorted_cond'), 'eeg_sorted_cond');
+
+        eeg_sorted_cond = eeg_sorted_cond_male;
+        save(fullfile(OutputFolderEEG, 'Male', 'Aperiodic', 'Parameters', i_param, i_cond, 'eeg_sorted_cond'), 'eeg_sorted_cond');
     end % for i_cond
 end % for i_param
 
