@@ -12,6 +12,7 @@ cross_val_steps = 10;
 n_rep_cross_val = 10;
 permut_rep      = 1000;
 
+Basefolder = '../';
 Folder = "Ready_for_DDTBOX";
 
 % Run MVPA for spectral signal
@@ -37,7 +38,7 @@ for i_behav = 1:4                       % gf, gc, Pre/Post Sleepiness
 
             for i_sample = 1:length(samples)
 
-                runDDT(i_behav, i_signal, i_cond, i_sample, cross_val_steps, n_rep_cross_val, permut_rep, Folder)
+                runDDT(i_behav, i_signal, i_cond, i_sample, cross_val_steps, n_rep_cross_val, permut_rep, Folder, Basefolder)
 
             end
 

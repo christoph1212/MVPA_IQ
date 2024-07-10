@@ -1,4 +1,4 @@
-function runDDT(i_behav, i_signal, i_cond, i_sample, cross_val_steps, n_rep_cross_val, permut_rep, Folder) 
+function runDDT(i_behav, i_signal, i_cond, i_sample, cross_val_steps, n_rep_cross_val, permut_rep, Folder, Basefolder) 
 % 
 % This script was created using the original script from the study from 
 % Jach et al. (2020) and was modified for the CoScience datasets. Change 
@@ -74,13 +74,12 @@ if ischar(cross_val_steps) | isstring(cross_val_steps); cross_val_steps = str2do
 if ischar(n_rep_cross_val) | isstring(n_rep_cross_val); n_rep_cross_val = str2double(n_rep_cross_val); end
 if ischar(permut_rep) | isstring(permut_rep); permut_rep = str2double(permut_rep); end
 if ischar(Folder); Folder = convertCharsToStrings(Folder); end
+if ischar(Basefolder); Folder = convertCharsToStrings(Basefolder); end
 
 
-
-% Adjust Folders Here
-Basefolder = '../';        
+% Adjust Folders Here       
 Datafolder = fullfile(Basefolder, 'Data', filesep);    
-addpath(genpath(fullfile(Basefolder, 'Matlab', 'DDTBOX-master')));
+%addpath(genpath(fullfile(Basefolder, 'Matlab', 'DDTBOX-master')));
 Resultsfolder = fullfile(Basefolder, 'Results');
 if ~isfolder(Resultsfolder)
     mkdir(Resultsfolder)
