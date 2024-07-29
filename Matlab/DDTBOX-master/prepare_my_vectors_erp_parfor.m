@@ -118,6 +118,10 @@ for main_analysis = 1:nr_rounds % 1=real decoding, 2=permutation test
     end % of if allsteps
                 
     parfor rep = 1:crossval_repetitions(main_analysis, 1) % repetition of cross_validation cycle   MAKE PARFOR AGAIN
+
+        % Precompute any variables that depend on `rep` outside the nested loops. %KP
+        ncv = repetition_data_steps(rep);  %KP
+
                
         for cv = 1:crossval_steps % cross-validation step
                               
