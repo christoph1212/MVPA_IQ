@@ -110,7 +110,7 @@ for main_analysis = 1:nr_rounds % 1=real decoding, 2=permutation test
     if allsteps == 1 % Analyse all steps
         
         nsteps = floor((trial_length - (cfg.window_width - cfg.step_width)) / cfg.step_width);   
-        
+
     elseif allsteps == 0 % Analyse a predefined number of steps 
         
         nsteps = defined_steps;

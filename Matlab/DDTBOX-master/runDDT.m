@@ -74,7 +74,7 @@ if ischar(cross_val_steps) | isstring(cross_val_steps); cross_val_steps = str2do
 if ischar(n_rep_cross_val) | isstring(n_rep_cross_val); n_rep_cross_val = str2double(n_rep_cross_val); end
 if ischar(permut_rep) | isstring(permut_rep); permut_rep = str2double(permut_rep); end
 if ischar(Folder); Folder = convertCharsToStrings(Folder); end
-if ischar(Basefolder); Folder = convertCharsToStrings(Basefolder); end
+if ischar(Basefolder); Basefolder = convertCharsToStrings(Basefolder); end
 
 
 % Adjust Folders Here       
@@ -232,8 +232,13 @@ ncond = size(cond_labels, 2);
 analysis_mode = 3; % ANALYSIS mode (1 = SVM classification with LIBSVM / 2 = SVM classification with LIBLINEAR / 3 = SVR with LIBSVM)
 stmode = 3; % SPACETIME mode (1 = spatial / 2 = temporal / 3 = spatio-temporal)
 avmode = 1; % AVERAGE mode (1 = no averaging; use single-trial data / 2 = use run-averaged data). Note: Single trials needed for SVR
-window_width_ms = 2; % Width of sliding analysis window in ms
-step_width_ms = 2; % Step size with which sliding analysis window is moved through the trial
+if i_signal == 4 || i_signal == 5
+    window_width_ms = 1; % Width of sliding analysis window in ms
+    step_width_ms = 1; % Step size with which sliding analysis window is moved through the trial
+else
+    window_width_ms = 2; % Width of sliding analysis window in ms
+    step_width_ms = 2; % Step size with which sliding analysis window is moved through the trial
+end
 zscore_convert = 0; % Convert data into z-scores before decoding? 0 = no / 1 = yes
 %cross_val_steps = 10; % How many cross-validation steps (if no runs available)?
 %n_rep_cross_val = 10; % How many repetitions of full cross-validation with re-ordered data?
@@ -304,7 +309,7 @@ for dcg_set = 1:length(dcgs_for_analyses)
 
         % Run the decoding analyses
         decoding_erp(cfg);
-
+        
     end % of for sbj
     
 end % of for dcg_set
