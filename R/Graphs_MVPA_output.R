@@ -219,6 +219,22 @@ for (i_folders in 1:length(myFolders)) {
     paste(unlist(strsplit(name, " "))[2:4], collapse = " ")
   })
   
+  # Safe hm data frame for each sample
+  if (i_folders == 1) {
+    
+    decoding_performance_female <- hm
+    
+  } else if (i_folders == 2) {
+    
+    decoding_performance_full <- hm
+    
+  } else {
+  
+    decoding_performance_male <- hm
+      
+  }
+  
+  
   # Combine all data frames into a single data frame
   combined_supp <- bind_rows(data_list, .id = "FileID")
   
