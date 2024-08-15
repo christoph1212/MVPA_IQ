@@ -28,4 +28,6 @@ __pycache__/
 
 *.docx
 
-Test_Partial_Correlations.m
+*.pdf
+
+*.pptx
