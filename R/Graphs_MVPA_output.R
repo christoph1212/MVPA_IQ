@@ -33,9 +33,27 @@ library(cowplot) #for combining ggplots
 myFolders <- list.files(path = "Results", pattern = "MVPA*")
 foldersplits <- strsplit(myFolders, '_')
 
+p_vals <- read.csv("Results/p_values_Cluster_corrected.csv", header = TRUE)
+
+p_vals[, 2][p_vals[, 2] == 0] <- NA
+
+p_vals <- p_vals %>%
+  mutate(Bins_30 = NA)
+
+names(p_vals) <- c("File", "1", "2", "3", "4", "5", "6",  "7", "8", "9", "10", "11", "12", 
+          "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24",
+          "25", "26", "27", "28", "29", "30")
+
+p_vals_long <- p_vals %>%
+  pivot_longer(cols = c(2:31),
+               names_to = "Bins",
+               values_to = "Value")
+
+p_vals_long$Bins <- as.numeric(p_vals_long$Bins)
+
 for (i_folders in 1:length(myFolders)) {
   
-  print(paste("Preparing Plots for the", foldersplits[[i_folders]][3], "Sample."))
+  print(paste("Preparing Plots for", foldersplits[[i_folders]][3], "Participants."))
   
   # Create Output Folder
   if (!dir.exists(paste0("Results/Plots_", foldersplits[[i_folders]][3]))) {
@@ -183,6 +201,9 @@ for (i_folders in 1:length(myFolders)) {
     hm[, i] <- melt$value
     colnames(hm)[i] <- FileNames[[i]]
     
+    p2plot <- p_vals_long %>% 
+      filter(File == myFilesNoCSV[i])
+    
     # Make GG Plot
     tempplot <- ggplot() +
       geom_line(
@@ -201,7 +222,9 @@ for (i_folders in 1:length(myFolders)) {
                          values = c(toString(color_vals[i]), "grey50")) + 
       scale_fill_manual(name = "Decoding Accuracy",
                         labels = c("M", "P M"),
-                        values = c(toString(color_vals[i]), "grey50"))
+                        values = c(toString(color_vals[i]), "grey50")) +
+      geom_segment(data = p2plot, aes(x = Value-0.5, y = -0.2, xend = Value+0.5, yend = -0.2), 
+                   linewidth = 2)
     
     # Add into list
     myplots[[i]] <- tempplot
@@ -242,7 +265,15 @@ for (i_folders in 1:length(myFolders)) {
     mutate(FileNames = FileNames[as.numeric(FileID)], 
            PlotTitles = PlotTitles[as.numeric(FileID)],
            Behav = Behav[as.numeric(FileID)],
-           Condition = Condition[as.numeric(FileID)])
+           Condition = Condition[as.numeric(FileID)],
+           File = myFilesNoCSV[as.numeric(FileID)])
+  
+  colnames(combined_supp)[colnames(combined_supp) == 'ID'] <- 'Bins'
+  
+  combined_supp <- left_join(combined_supp, p_vals_long, by = c("File", "Bins"))
+    
+  
+    
   
   # Full Sample (i_folders = 2) also contains Sleepiness data
   if (i_folders == 2) {
@@ -321,7 +352,7 @@ for (i_folders in 1:length(myFolders)) {
   
   
   # Plots for each Behavioral variable and condition
-  grid_aper <- ggplot(combined_supp_aper, aes(x = ID, y = value, color = factor(FileID))) +
+  grid_aper <- ggplot(combined_supp_aper, aes(x = Bins, y = value, color = factor(FileID))) +
     geom_line(linewidth = 0.75) +
     geom_ribbon(aes(ymin = lower.percentile, ymax = upper.percentile, fill = factor(FileID)),
                 linetype = "blank", alpha = 0.40) +
@@ -330,6 +361,8 @@ for (i_folders in 1:length(myFolders)) {
     scale_color_manual(name = "FileID", values = fileid_colors) +
     scale_fill_manual(name = "FileID", values = fileid_colors) +
     facet_grid(factor(Condition, condition_order) ~ factor(Behav, behav_order)) +
+    geom_segment(aes(x = Value-0.5, y = -0.2, xend = Value+0.5, yend = -0.2), 
+                 linewidth = 2, colour = 'black') +
     labs(x = "Frequency (Hz)", y = "Correlation") +
     theme(axis.text.x = element_text(size = 18),
           axis.text.y = element_text(size = 18),
@@ -342,7 +375,7 @@ for (i_folders in 1:length(myFolders)) {
          dpi=300, width = 16, height = 10, path = paste0("Results/Plots_", foldersplits[[i_folders]][3])) 
   
   
-  grid_per <- ggplot(combined_supp_per, aes(x = ID, y = value, color = factor(FileID))) +
+  grid_per <- ggplot(combined_supp_per, aes(x = Bins, y = value, color = factor(FileID))) +
     geom_line(linewidth = 0.75) +
     geom_ribbon(aes(ymin = lower.percentile, ymax = upper.percentile, fill = factor(FileID)),
                 linetype = "blank", alpha = 0.40) +
@@ -351,6 +384,8 @@ for (i_folders in 1:length(myFolders)) {
     scale_color_manual(name = "FileID", values = fileid_colors) +
     scale_fill_manual(name = "FileID", values = fileid_colors) +
     facet_grid(factor(Condition, condition_order) ~ factor(Behav, behav_order)) +
+    geom_segment(aes(x = Value-0.5, y = -0.2, xend = Value+0.5, yend = -0.2), 
+                 linewidth = 2, colour = 'black') +
     labs(x = "Frequency (Hz)", y = "Correlation") +
     theme(axis.text.x = element_text(size = 18),
           axis.text.y = element_text(size = 18),
@@ -363,7 +398,7 @@ for (i_folders in 1:length(myFolders)) {
          dpi=300, width = 16, height = 10, path = paste0("Results/Plots_", foldersplits[[i_folders]][3])) 
   
   
-  grid_total <- ggplot(combined_supp_total, aes(x = ID, y = value, color = factor(FileID))) +
+  grid_total <- ggplot(combined_supp_total, aes(x = Bins, y = value, color = factor(FileID))) +
     geom_line(linewidth = 0.75) +
     geom_ribbon(aes(ymin = lower.percentile, ymax = upper.percentile, fill = factor(FileID)),
                 linetype = "blank", alpha = 0.40) +
@@ -372,6 +407,8 @@ for (i_folders in 1:length(myFolders)) {
     scale_color_manual(name = "FileID", values = fileid_colors) +
     scale_fill_manual(name = "FileID", values = fileid_colors) +
     facet_grid(factor(Condition, condition_order) ~ factor(Behav, behav_order)) +
+    geom_segment(aes(x = Value-0.5, y = -0.2, xend = Value+0.5, yend = -0.2), 
+                 linewidth = 2, colour = 'black') +
     labs(x = "Frequency (Hz)", y = "Correlation") +
     theme(axis.text.x = element_text(size = 18),
           axis.text.y = element_text(size = 18),
