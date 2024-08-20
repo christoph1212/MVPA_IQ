@@ -18,6 +18,10 @@
 %
 % Author: Christoph Fruehlinger (August, 2023)
 
+%%
+clear
+clc
+
 %% EEG Data
 % Set Folders
 Datafolder = fullfile('../Data');
@@ -39,9 +43,16 @@ GenderData.Gender(strcmp(GenderData.Gender, "2")) = "male";
 
 Data = innerjoin(GenderData, Behav_data, "Keys","ID");
 
+% Exclude outliers
+Data = exclude_outliers(Data);
+
+% Calculate z-scores for crystallized intelligence within gender
 Data.gc_score_z = nan(height(Data), 1);
 Data.gc_score_z(strcmp(Data.Gender, 'male')) = zscore(Data(strcmp(Data.Gender, "male"), :).gc_score);
 Data.gc_score_z(strcmp(Data.Gender, 'female')) = zscore(Data(strcmp(Data.Gender, "female"), :).gc_score);
+
+% Save Data Table for Descriptive Analysis
+writetable(Data, fullfile(BehavFolder, "Behavioral_Data.csv"));
 
 % List of all Participants per condition
 subs_pre_EO = {};

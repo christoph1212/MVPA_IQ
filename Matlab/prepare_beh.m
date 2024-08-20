@@ -124,7 +124,30 @@ for i_sub = 1:length(Participants)
 end
 
 
-% Create Sleepiness Scores
-behav_data = behav_data(~any(ismissing(behav_data),2),:);
-behav_data.Pre_Task_Sleepiness = mean([zscore(behav_data.Tired_Pre), zscore(behav_data.Exhausted_Pre)],2);
-behav_data.Post_Task_Sleepiness = mean([zscore(behav_data.Tired_Post), zscore(behav_data.Exhausted_Post)],2);
+%% Create Sleepiness Scores
+% transform to long format
+ID_long = repmat(behav_data.ID, 2, 1);
+Time = [repmat({'Pre'}, height(behav_data), 1); repmat({'Post'}, height(behav_data), 1)];
+Tired = [behav_data.Tired_Pre; behav_data.Tired_Post];
+Exhausted = [behav_data.Exhausted_Pre; behav_data.Exhausted_Post];
+
+sleep_long = table(ID_long, Time, Tired, Exhausted);
+
+sleep_long = sleep_long(~any(ismissing(sleep_long),2),:);
+
+% Calculate z-scores
+sleep_long.Sleepiness = mean([zscore(sleep_long.Tired), zscore(sleep_long.Exhausted)],2);
+
+% transform to wide format
+sleep_data = unstack(sleep_long, {'Tired', 'Exhausted', 'Sleepiness'}, 'Time');
+
+sleep_data = sleep_data(:, {'ID_long', 'Tired_Pre', 'Tired_Post', 'Exhausted_Pre', 'Exhausted_Post', 'Sleepiness_Pre', 'Sleepiness_Post'});
+
+sleep_data.Properties.VariableNames = {'ID', 'Tired_Pre', 'Tired_Post', 'Exhausted_Pre', 'Exhausted_Post', 'Pre_Task_Sleepiness', 'Post_Task_Sleepiness'};
+
+% Combine with gc and gf data
+behav_data = innerjoin(behav_data, sleep_data);
+% exclude subs with missing / 0 gf or gc data
+behav_data = behav_data(~any(ismissing(behav_data), 2), :);
+behav_data = behav_data(~any(behav_data.gc_score == 0, 2), :);
+behav_data = behav_data(~any(behav_data.gf_score == 0, 2), :);
