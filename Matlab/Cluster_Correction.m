@@ -1,5 +1,12 @@
+% This script loads in the MVPA data and performs cluster correction based
+% on the define p-value. The output table will subsequently be used for
+% plotting.
+%
+% Written by: Christoph Fruehlinger
+% Last edits: October 2024
+
 %%  housekeeping
-clear;
+clear
 clc;
 close all;
 
@@ -12,6 +19,8 @@ samples = dir(fullfile(ResultsFolder, 'MVPA*'));
 samples = {samples(~ismember({samples.name}, {'.', '..'})).name};
 
 i_row = 1;
+
+%% Define output structure and p-value for cluster correction
 p_val_struct = struct('File', {}, 'Bins', {});
 
 p_val = 0.01;
@@ -39,41 +48,42 @@ for sample = 1:length(samples)
             
             mean_perm = mean_perm_ten_10_folds(:,i_perm);
             
-            % convert Fisher-z-transformed coefficients back to r and
-            % compute p-value (one-sided; only positive values show
-            % association between EEG and behavioral data)
+            % Define sample size
             if sample == 1
                 if any(strcmp(split(file.name, '_'), 'Pre')) && any(strcmp(split(file.name, '_'), 'EyesOpen'))
-                    n = 364;
+                    n = 363;
                 elseif any(strcmp(split(file.name, '_'), 'Pre')) && any(strcmp(split(file.name, '_'), 'EyesClosed'))
-                    n = 360;
+                    n = 359;
                 elseif any(strcmp(split(file.name, '_'), 'Post')) && any(strcmp(split(file.name, '_'), 'EyesOpen'))
-                    n = 362;
+                    n = 361;
                 else
-                    n = 360;
+                    n = 359;
                 end
             elseif sample == 2
                 if any(strcmp(split(file.name, '_'), 'Pre')) && any(strcmp(split(file.name, '_'), 'EyesOpen'))
-                    n = 749;
+                    n = 747;
                 elseif any(strcmp(split(file.name, '_'), 'Pre')) && any(strcmp(split(file.name, '_'), 'EyesClosed'))
-                    n = 742;
+                    n = 740;
                 elseif any(strcmp(split(file.name, '_'), 'Post')) && any(strcmp(split(file.name, '_'), 'EyesOpen'))
-                    n = 742;
+                    n = 739;
                 else
-                    n = 738;
+                    n = 735;
                 end
             else 
                 if any(strcmp(split(file.name, '_'), 'Pre')) && any(strcmp(split(file.name, '_'), 'EyesOpen'))
-                    n = 377;
+                    n = 376;
                 elseif any(strcmp(split(file.name, '_'), 'Pre')) && any(strcmp(split(file.name, '_'), 'EyesClosed'))
-                    n = 374;
+                    n = 373;
                 elseif any(strcmp(split(file.name, '_'), 'Post')) && any(strcmp(split(file.name, '_'), 'EyesOpen'))
-                    n = 372;
-                else
                     n = 370;
+                else
+                    n = 368;
                 end
             end
             
+            % convert Fisher-z-transformed coefficients back to r and
+            % compute p-value (one-sided; only positive values show
+            % association between EEG and behavioral data)
             r = (exp(2*mean_perm) - 1) ./ (exp(2*mean_perm) + 1);
     
             t = (r .* sqrt(n-2)) ./ (sqrt(1-r.^2));
