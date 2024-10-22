@@ -26,8 +26,48 @@ Template = readtable(fullfile(InputFolder, 'Pre', 'EyesOpen', 'rest_1_pre_Averag
 Template = Template(:,1);
 
 % Load Files and order Channels according to the Template
-for i_cond = [fullfile("Pre", "EyesOpen"), fullfile("Post", "EyesOpen")]
-    filepath = fullfile(InputFolder, i_cond);
+for i_signal = ["Total", "Periodic"]
+    for i_cond = [fullfile("Pre", "EyesOpen"), fullfile("Post", "EyesOpen")]
+        if i_signal == "Total"
+            filepath = fullfile(InputFolder, i_cond);
+        else
+            filepath = fullfile(DataFolder, 'FOOOF_Data', i_signal, i_cond);
+        end
+    
+        files = dir(filepath);
+        files = files(~ismember({files.name}, {'.', '..'}));
+        files = {files.name};
+        for file = 1:length(files)
+            current_file = cell2mat(files(file));
+            loaded_file = readtable(fullfile(filepath, current_file));
+            % ? loaded_file = loaded_file(1:64, 1:61);
+            [~, order_indices] = ismember(loaded_file(:,1), Template);
+            [~, sorted_indices] = sort(order_indices);
+            sorted_data = loaded_file(sorted_indices, :);
+            [~,filename,~] = fileparts(current_file);
+    
+            if ~(isfolder(fullfile(OutputFolder, i_signal, i_cond)))
+            mkdir(fullfile(OutputFolder, i_signal, i_cond))
+            end
+    
+            if i_signal == "Total"
+                writetable(sorted_data, fullfile(OutputFolder, i_signal, i_cond, [filename '_new.csv']));
+            else
+                writetable(sorted_data, fullfile(OutputFolder, i_signal, i_cond, ['rest_' filename '_new.csv']));
+            end
+
+        end
+    end
+end
+
+
+% Repeat for Aperiodic-Paramters
+
+OutputFolder = fullfile(DataFolder, 'Preprocessed_ordered_data', 'Aperiodic', 'Parameters');
+
+for i_cond = [fullfile("Pre", "EyesOpen"), fullfile("Pre", "EyesClosed"), fullfile("Post", "EyesOpen"), fullfile("Post", "EyesClosed")]
+
+    filepath = fullfile(DataFolder, 'FOOOF_Data', "Aperiodic", "Parameter", i_cond);
 
     files = dir(filepath);
     files = files(~ismember({files.name}, {'.', '..'}));
@@ -35,16 +75,24 @@ for i_cond = [fullfile("Pre", "EyesOpen"), fullfile("Post", "EyesOpen")]
     for file = 1:length(files)
         current_file = cell2mat(files(file));
         loaded_file = readtable(fullfile(filepath, current_file));
-        %loaded_file = loaded_file(1:64, 1:61);
         [~, order_indices] = ismember(loaded_file(:,1), Template);
         [~, sorted_indices] = sort(order_indices);
         sorted_data = loaded_file(sorted_indices, :);
         [~,filename,~] = fileparts(current_file);
 
-        if ~(isfolder(fullfile(OutputFolder, i_cond)))
-        mkdir(fullfile(OutputFolder, i_cond))
+        sorted_data_offset = sorted_data(:,1:2);
+        sorted_data_exponent = sorted_data(:,[1,3]);
+
+        if ~(isfolder(fullfile(OutputFolder, 'Offset', i_cond)))
+            mkdir(fullfile(OutputFolder, 'Offset', i_cond))
         end
 
-        writetable(sorted_data, fullfile(OutputFolder, i_cond, [filename '_new.csv']));
+        if ~(isfolder(fullfile(OutputFolder, 'Exponent', i_cond)))
+            mkdir(fullfile(OutputFolder, 'Exponent', i_cond))
+        end
+
+        writetable(sorted_data_offset, fullfile(OutputFolder, 'Offset', i_cond, ['rest_' filename '_offset_new.csv']));
+        writetable(sorted_data_exponent, fullfile(OutputFolder, 'Exponent', i_cond, ['rest_' filename '_exponent_new.csv']));
     end
+
 end
