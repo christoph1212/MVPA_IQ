@@ -26,7 +26,7 @@ Template = readtable(fullfile(InputFolder_Total, 'Pre', 'EyesOpen', 'sub-AA06WI1
 Template = Template(:,1);
 
 % Load Files and order Channels according to the Template
-for i_signal = ["Total", "Aperiodic", "Periodic"]
+for i_signal = ["Total", "Periodic"]
     for i_cond = [fullfile("Pre", "EyesOpen"), fullfile("Pre", "EyesClosed"), fullfile("Post", "EyesOpen"), fullfile("Post", "EyesClosed")]
         if i_signal == "Total"
             filepath = fullfile(InputFolder_Total, i_cond);

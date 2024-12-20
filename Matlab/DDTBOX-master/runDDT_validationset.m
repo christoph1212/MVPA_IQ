@@ -1,4 +1,4 @@
-function runDDT(i_behav, i_signal, i_cond, i_sample, cross_val_steps, n_rep_cross_val, permut_rep, Folder, Basefolder) 
+function runDDT_validationset(i_behav, i_signal, i_cond, i_sample, cross_val_steps, n_rep_cross_val, permut_rep, Folder, Basefolder) 
 % 
 % This script was created using the original script from the study from 
 % Jach et al. (2020) and was modified for the CoScience datasets. Change 
@@ -60,9 +60,9 @@ function runDDT(i_behav, i_signal, i_cond, i_sample, cross_val_steps, n_rep_cros
 % note: this command won't work unless you run the entire script at once -
 % i.e., not in command window and not as a 'section'.
 % Important - add path to where EEGlab is housed on your computer.
-behav = ["Fluid", "Crystallized", "Pre_Sleepiness", "Post_Sleepiness"];
+behav = "Fluid";
 signalsEEG = ["Total", "Periodic", "Aperiodic/Parameters/Offset", "Aperiodic/Parameters/Exponent"];
-Eye_conditions = [fullfile("Pre", "EyesOpen"), fullfile("Pre", "EyesClosed"), fullfile("Post", "EyesOpen"), fullfile("Post", "EyesClosed")];
+Eye_conditions = [fullfile("Pre", "EyesOpen"), fullfile("Post", "EyesOpen")];
 sample = ["Full_Sample", "Male", "Female"];
 
 % For Cluster inputs are usually given as character
@@ -78,7 +78,7 @@ if ischar(Basefolder); Basefolder = convertCharsToStrings(Basefolder); end
 
 
 % Adjust Folders Here       
-Datafolder = fullfile(Basefolder, 'Data', filesep);    
+Datafolder = fullfile(Basefolder, 'DataValidation', filesep);    
 %addpath(genpath(fullfile(Basefolder, 'Matlab', 'DDTBOX-master')));
 Resultsfolder = fullfile(Basefolder, 'Results');
 if ~isfolder(Resultsfolder)

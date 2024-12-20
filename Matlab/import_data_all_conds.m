@@ -63,7 +63,7 @@ subs_post_EC = {};
 eeg_sorted_cond_female = [];
 eeg_sorted_cond_male = [];
 
-for i_signal = ["Total", "Aperiodic", "Periodic"]
+for i_signal = ["Total", "Periodic"]
     for i_cond = [fullfile("Pre", "EyesOpen"), fullfile("Pre", "EyesClosed"), fullfile("Post", "EyesOpen"), fullfile("Post", "EyesClosed")]
         filepath = fullfile(InputFolder, i_signal, i_cond);
         Participants = dir(filepath);

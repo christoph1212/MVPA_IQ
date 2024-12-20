@@ -25,6 +25,7 @@ addpath(DataFolder);
 Template = readtable(fullfile(InputFolder, 'Pre', 'EyesOpen', 'rest_1_pre_Average_EO.csv'));
 Template = Template(:,1);
 
+
 % Load Files and order Channels according to the Template
 for i_signal = ["Total", "Periodic"]
     for i_cond = [fullfile("Pre", "EyesOpen"), fullfile("Post", "EyesOpen")]
@@ -96,3 +97,11 @@ for i_cond = [fullfile("Pre", "EyesOpen"), fullfile("Pre", "EyesClosed"), fullfi
     end
 
 end
+
+chanlocs_all = readtable('Chanlocs_Biosemi.txt');
+[~, sort_idx] = ismember(upper(Template.Var1), [chanlocs_all.labels]);
+valid_idx = sort_idx > 0;
+sorted_chanlocs_all = chanlocs_all(sort_idx(valid_idx), :);
+sorted_chanlocs_all = table2struct(sorted_chanlocs_all);
+
+save('chanlocs_sorted_validationset.mat', 'sorted_chanlocs_all')

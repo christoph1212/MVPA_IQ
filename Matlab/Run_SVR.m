@@ -32,7 +32,7 @@ for i_behav = 1:4                       % gf, gc, Pre/Post Sleepiness
         cond = 1:4;
     end
 
-    for i_signal = 1:5                  % EEG signal types
+    for i_signal = 1:4                  % EEG signal types
 
         for i_cond = cond                % Pre/Post EO/EC
 
