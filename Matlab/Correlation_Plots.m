@@ -332,34 +332,16 @@ for i_sample = 1:length(sample)
     
         exportgraphics(fluid_plot, sprintf('../Results/Plots_%s/Fluid_Topoplot_%s.png', outputfolder, signal(i_signal)), 'Resolution', 600)
 
-        % if i_signal == 1 || i_signal == 2
-        % 
-        %     plot_freq_grid(conds_fluid, cond_labels, 'Fluid', i_sample, i_signal, sorted_data, outputfolder);
-        % 
-        % end
-
         % Crystallized
         crystallized_plot = make_topoplot(conds_crystallized, mean_conds_crystallized, cond_labels, i_signal, sorted_data);
         
         exportgraphics(crystallized_plot, sprintf('../Results/Plots_%s/Crystallized_Topoplot_%s.png', outputfolder, signal(i_signal)), 'Resolution', 600)
         
-        % if i_signal == 1 || i_signal == 2
-        % 
-        %     plot_freq_grid(conds_crystallized, cond_labels, 'Crystallized', i_sample, i_signal, sorted_data, outputfolder);
-        % 
-        % end
-        
         if i_sample == 1 
             % Sleepiness
             sleepiness_plot = make_topoplot(conds_sleepiness, mean_conds_sleepiness, cond_labels, i_signal, sorted_data);
 
-            exportgraphics(sleepiness_plot, sprintf('../Results/Plots_%s/Sleepiness_Topoplot_%s.png', outputfolder, signal(i_signal)), 'Resolution', 600)
-
-            % if i_signal == 1 || i_signal == 2
-            % 
-            %     plot_freq_grid(conds_sleepiness, cond_labels, 'Sleepiness', i_sample, i_signal, sorted_data, outputfolder);
-            % 
-            % end                  
+            exportgraphics(sleepiness_plot, sprintf('../Results/Plots_%s/Sleepiness_Topoplot_%s.png', outputfolder, signal(i_signal)), 'Resolution', 600)               
 
         end
     
@@ -367,102 +349,3 @@ for i_sample = 1:length(sample)
 end
 
 disp("Done")
-
-
-
-
-
-% % Tiredness & Exhaustion Subscales
-% behavioral_data = readtable('..\Data\BehavioralData\Behavioral_Data.csv');
-% 
-% % calculate z-scores for Tiredness and Exhaustion 
-% subs_pre_EO = readtable('..\Data\subs_pre_EO.txt', 'ReadVariableNames', false);
-% subs_pre_EO.Properties.VariableNames = {'ID'};
-% tired_pre_EO = {zscore(table2array(behavioral_data(ismember(behavioral_data.ID, subs_pre_EO.ID), "Tired_Pre")))};
-% exhausted_pre_EO = {zscore(table2array(behavioral_data(ismember(behavioral_data.ID, subs_pre_EO.ID), "Exhausted_Pre")))};
-% 
-% subs_pre_EC = readtable('..\Data\subs_pre_EC.txt', 'ReadVariableNames', false);
-% subs_pre_EC.Properties.VariableNames = {'ID'};
-% tired_pre_EC = {zscore(table2array(behavioral_data(ismember(behavioral_data.ID, subs_pre_EC.ID), "Tired_Pre")))};
-% exhausted_pre_EC = {zscore(table2array(behavioral_data(ismember(behavioral_data.ID, subs_pre_EC.ID), "Exhausted_Pre")))};
-% 
-% subs_post_EO = readtable('..\Data\subs_post_EO.txt', 'ReadVariableNames', false);
-% subs_post_EO.Properties.VariableNames = {'ID'};
-% tired_post_EO = {zscore(table2array(behavioral_data(ismember(behavioral_data.ID, subs_post_EO.ID), "Tired_Post")))};
-% exhausted_post_EO = {zscore(table2array(behavioral_data(ismember(behavioral_data.ID, subs_post_EO.ID), "Exhausted_Post")))};
-% 
-% subs_post_EC = readtable('..\Data\subs_post_EC.txt', 'ReadVariableNames', false);
-% subs_post_EC.Properties.VariableNames = {'ID'};
-% tired_post_EC = {zscore(table2array(behavioral_data(ismember(behavioral_data.ID, subs_post_EC.ID), "Tired_Post")))};
-% exhausted_post_EC = {zscore(table2array(behavioral_data(ismember(behavioral_data.ID, subs_post_EC.ID), "Exhausted_Post")))};
-
-
-
-% %% Tired correlations
-% 
-% % --------- Pre eyes open ------------
-% % Run correlations with behavioral scores at all frequencies and
-% % channel combos            
-% corr_tired_pre_EO = run_correlation(tired_pre_EO, pre_eyes_open, signal_option);
-% 
-% % ------ Pre eyes closed --------            
-% corr_tired_pre_EC = run_correlation(tired_pre_EC, pre_eyes_closed, signal_option);
-% 
-% % ----- Post eyes open --------           
-% corr_tired_post_EO = run_correlation(tired_post_EO, post_eyes_open, signal_option);
-% 
-% % ----- Post eyes closed -----            
-% corr_tired_post_EC = run_correlation(tired_post_EC, post_eyes_closed, signal_option);
-% 
-% % list all conds
-% conds_tired = {};
-% conds_tired{1} = corr_tired_pre_EO;
-% conds_tired{2} = corr_tired_pre_EC;
-% conds_tired{3} = corr_tired_post_EO;
-% conds_tired{4} = corr_tired_post_EC;
-
-%% Exhaustion correlations
-
-% % --------- Pre eyes open ------------
-% % Run correlations with behavioral scores at all frequencies and
-% % channel combos            
-% corr_exhausted_pre_EO = run_correlation(exhausted_pre_EO, pre_eyes_open, signal_option);
-% 
-% % ------ Pre eyes closed --------            
-% corr_exhausted_pre_EC = run_correlation(exhausted_pre_EC, pre_eyes_closed, signal_option);
-% 
-% % ----- Post eyes open --------                    
-% corr_exhausted_post_EO = run_correlation(exhausted_post_EO, post_eyes_open, signal_option);
-% 
-% % ----- Post eyes closed -----            
-% corr_exhausted_post_EC = run_correlation(exhausted_post_EC, post_eyes_closed, signal_option);
-% 
-% % List all conds
-% conds_exhausted = {};
-% conds_exhausted{1} = corr_exhausted_pre_EO;
-% conds_exhausted{2} = corr_exhausted_pre_EC;
-% conds_exhausted{3} = corr_exhausted_post_EO;
-% conds_exhausted{4} = corr_exhausted_post_EC;
-
-
-% % Tiredness
-% tiredness_plot = make_topoplot(conds_tired, cond_labels, 'Tiredness', i_sample, i_signal, sorted_data);
-% 
-% saveas(tiredness_plot, sprintf('../Results/Plots_%s/Tiredness_Topoplot_%s.png', outputfolder, signal(i_signal)))
-% 
-% if i_signal == 1 || i_signal == 2
-% 
-%     plot_freq_grid(conds_tired, cond_labels, 'Tiredness', i_sample, i_signal, sorted_data, outputfolder);
-% 
-% end
-% 
-% % Exhaustion
-% exhaustion_plot = make_topoplot(conds_exhausted, cond_labels, 'Exhaustion', i_sample, i_signal, sorted_data);
-% 
-% saveas(exhaustion_plot, sprintf('../Results/Plots_%s/Exhaustion_Topoplot_%s.png', outputfolder, signal(i_signal)))
-% 
-% if i_signal == 1 || i_signal == 2
-% 
-%     plot_freq_grid(conds_exhausted, cond_labels, 'Exhaustion', i_sample, i_signal, sorted_data, outputfolder);
-% 
-% end
