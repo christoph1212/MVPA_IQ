@@ -94,11 +94,11 @@ for i_sample = 1:length(sample)
             % Post eyes open 
             load(sprintf('../Data/Ready_for_DDTBOX/EEG_sorted_cond/%s/%s/Post/EyesOpen/eeg_sorted_cond.mat', sample(i_sample), signal(i_signal)))
             post_eyes_open = eeg_sorted_cond;
-            
+                        
             % Post eyes closed 
             load(sprintf('../Data/Ready_for_DDTBOX/EEG_sorted_cond/%s/%s/Post/EyesClosed/eeg_sorted_cond.mat', sample(i_sample), signal(i_signal)))
             post_eyes_closed = eeg_sorted_cond;
-
+            
             signal_option = "spectral";
 
         else
@@ -106,19 +106,19 @@ for i_sample = 1:length(sample)
             % Pre eyes open 
             load(sprintf('../Data/Ready_for_DDTBOX/EEG_sorted_cond/%s/Aperiodic/Parameters/%s/Pre/EyesOpen/eeg_sorted_cond.mat', sample(i_sample), signal(i_signal)))
             pre_eyes_open = eeg_sorted_cond;
-            
+                        
             % Pre eyes closed
             load(sprintf('../Data/Ready_for_DDTBOX/EEG_sorted_cond/%s/Aperiodic/Parameters/%s/Pre/EyesClosed/eeg_sorted_cond.mat', sample(i_sample), signal(i_signal)))
             pre_eyes_closed = eeg_sorted_cond;
-            
+                        
             % Post eyes open 
             load(sprintf('../Data/Ready_for_DDTBOX/EEG_sorted_cond/%s/Aperiodic/Parameters/%s/Post/EyesOpen/eeg_sorted_cond.mat', sample(i_sample), signal(i_signal)))
             post_eyes_open = eeg_sorted_cond;
             
             % Post eyes closed 
             load(sprintf('../Data/Ready_for_DDTBOX/EEG_sorted_cond/%s/Aperiodic/Parameters/%s/Post/EyesClosed/eeg_sorted_cond.mat', sample(i_sample), signal(i_signal)))
-            post_eyes_closed = eeg_sorted_cond;
-
+            post_eyes_closed = eeg_sorted_cond;                    
+            
             signal_option = "parameters";
 
         end
@@ -139,8 +139,7 @@ for i_sample = 1:length(sample)
             [corr_fluid_post_EC, mean_corr_fluid_post_EC, p_fluid_post_EC] = run_correlation(fluid_post_EC, post_eyes_closed, signal_option);
             
             % Correct for multiple comparisons
-            [p_fluid_pre_EO_corrected, p_fluid_pre_EC_corrected, p_fluid_post_EO_corrected, p_fluid_post_EC_corrected] = p_correct( ...
-                    p_fluid_pre_EO, p_fluid_pre_EC, p_fluid_post_EO, p_fluid_post_EC);
+            p_corrected_fluid = p_correct(p_fluid_pre_EO, p_fluid_pre_EC, p_fluid_post_EO, p_fluid_post_EC);
             
             % list conds
             mean_conds_fluid = {};
@@ -148,10 +147,10 @@ for i_sample = 1:length(sample)
             mean_conds_fluid{2} = mean_corr_fluid_pre_EC;
             mean_conds_fluid{3} = mean_corr_fluid_post_EO;
             mean_conds_fluid{4} = mean_corr_fluid_post_EC;
-            mean_conds_fluid{5} = p_fluid_pre_EO_corrected;
-            mean_conds_fluid{6} = p_fluid_pre_EC_corrected;
-            mean_conds_fluid{7} = p_fluid_post_EO_corrected;
-            mean_conds_fluid{8} = p_fluid_post_EC_corrected;
+            mean_conds_fluid{5} = p_corrected_fluid{1};
+            mean_conds_fluid{6} = p_corrected_fluid{2};
+            mean_conds_fluid{7} = p_corrected_fluid{3};
+            mean_conds_fluid{8} = p_corrected_fluid{4};
 
             %% Crystallized correlations
             % --------- Pre eyes open ------------
@@ -167,8 +166,7 @@ for i_sample = 1:length(sample)
             [corr_crystallized_post_EC, mean_corr_crystallized_post_EC, p_crystallized_post_EC] = run_correlation(crystallized_post_EC, post_eyes_closed, signal_option);
             
             % Correct for multiple comparisons
-            [p_crystallized_pre_EO_corrected, p_crystallized_pre_EC_corrected, p_crystallized_post_EO_corrected, p_crystallized_post_EC_corrected] = p_correct( ...
-                    p_crystallized_pre_EO, p_crystallized_pre_EC, p_crystallized_post_EO, p_crystallized_post_EC);
+            p_corrected_crystallized = p_correct(p_crystallized_pre_EO, p_crystallized_pre_EC, p_crystallized_post_EO, p_crystallized_post_EC);
 
             % list conds
             mean_conds_crystallized = {};
@@ -176,16 +174,16 @@ for i_sample = 1:length(sample)
             mean_conds_crystallized{2} = mean_corr_crystallized_pre_EC;
             mean_conds_crystallized{3} = mean_corr_crystallized_post_EO;
             mean_conds_crystallized{4} = mean_corr_crystallized_post_EC;
-            mean_conds_crystallized{5} = p_crystallized_pre_EO_corrected;
-            mean_conds_crystallized{6} = p_crystallized_pre_EC_corrected;
-            mean_conds_crystallized{7} = p_crystallized_post_EO_corrected;
-            mean_conds_crystallized{8} = p_crystallized_post_EC_corrected;
+            mean_conds_crystallized{5} = p_corrected_crystallized{1};
+            mean_conds_crystallized{6} = p_corrected_crystallized{2};
+            mean_conds_crystallized{7} = p_corrected_crystallized{3};
+            mean_conds_crystallized{8} = p_corrected_crystallized{4};
 
             if i_sample == 1 
                 %% Sleepiness
                 % ------ Pre eyes open -------- 
                 [corr_sleepiness_pre_EO, mean_corr_sleepiness_pre_EO, p_sleepiness_pre_EO] = run_correlation(sleepiness_pre_EO, pre_eyes_open, signal_option);
-            
+                
                 % ------ Pre eyes closed --------            
                 [corr_sleepiness_pre_EC, mean_corr_sleepiness_pre_EC, p_sleepiness_pre_EC] = run_correlation(sleepiness_pre_EC, pre_eyes_closed, signal_option);
                 
@@ -194,9 +192,9 @@ for i_sample = 1:length(sample)
                 
                 % ----- Post eyes closed -----            
                 [corr_sleepiness_post_EC, mean_corr_sleepiness_post_EC, p_sleepiness_post_EC] = run_correlation(sleepiness_post_EC, post_eyes_closed, signal_option);
-    
+                
                 % Correct for multiple comparisons
-                [p_sleepiness_pre_EO_corrected, p_sleepiness_pre_EC_corrected, p_sleepiness_post_EO_corrected, p_sleepiness_post_EC_corrected] = p_correct( ...
+                p_corrected_sleepiness = p_correct( ...
                     p_sleepiness_pre_EO, p_sleepiness_pre_EC, p_sleepiness_post_EO, p_sleepiness_post_EC);
 
                 mean_conds_sleepiness = {};
@@ -204,10 +202,10 @@ for i_sample = 1:length(sample)
                 mean_conds_sleepiness{2} = mean_corr_sleepiness_pre_EC;
                 mean_conds_sleepiness{3} = mean_corr_sleepiness_post_EO;
                 mean_conds_sleepiness{4} = mean_corr_sleepiness_post_EC;
-                mean_conds_sleepiness{5} = p_sleepiness_pre_EO_corrected;
-                mean_conds_sleepiness{6} = p_sleepiness_pre_EC_corrected;
-                mean_conds_sleepiness{7} = p_sleepiness_post_EO_corrected;
-                mean_conds_sleepiness{8} = p_sleepiness_post_EC_corrected;
+                mean_conds_sleepiness{5} = p_corrected_sleepiness{1};
+                mean_conds_sleepiness{6} = p_corrected_sleepiness{2};
+                mean_conds_sleepiness{7} = p_corrected_sleepiness{3};
+                mean_conds_sleepiness{8} = p_corrected_sleepiness{4};
 
             end
 
@@ -226,15 +224,14 @@ for i_sample = 1:length(sample)
             [corr_fluid_post_EC, ~, p_fluid_post_EC] = run_correlation(fluid_post_EC, post_eyes_closed, signal_option);
         
             % Correct for multiple comparisons
-            [p_fluid_pre_EO_corrected, p_fluid_pre_EC_corrected, p_fluid_post_EO_corrected, p_fluid_post_EC_corrected] = p_correct( ...
-                    p_fluid_pre_EO, p_fluid_pre_EC, p_fluid_post_EO, p_fluid_post_EC);
+            p_corrected_fluid = p_correct(p_fluid_pre_EO, p_fluid_pre_EC, p_fluid_post_EO, p_fluid_post_EC);
 
             % list conds
             mean_conds_fluid = {};
-            mean_conds_fluid{1} = p_fluid_pre_EO_corrected;
-            mean_conds_fluid{2} = p_fluid_pre_EC_corrected;
-            mean_conds_fluid{3} = p_fluid_post_EO_corrected;
-            mean_conds_fluid{4} = p_fluid_post_EC_corrected;           
+            mean_conds_fluid{1} = p_corrected_fluid{1};
+            mean_conds_fluid{2} = p_corrected_fluid{2};
+            mean_conds_fluid{3} = p_corrected_fluid{3};
+            mean_conds_fluid{4} = p_corrected_fluid{4};           
 
             %% Crystallized correlations
             % --------- Pre eyes open ------------
@@ -250,15 +247,14 @@ for i_sample = 1:length(sample)
             [corr_crystallized_post_EC, ~, p_crystallized_post_EC] = run_correlation(crystallized_post_EC, post_eyes_closed, signal_option);
             
             % Correct for multiple comparisons
-            [p_crystallized_pre_EO_corrected, p_crystallized_pre_EC_corrected, p_crystallized_post_EO_corrected, p_crystallized_post_EC_corrected] = p_correct( ...
-                    p_crystallized_pre_EO, p_crystallized_pre_EC, p_crystallized_post_EO, p_crystallized_post_EC);
+            p_corrected_crystallized = p_correct(p_crystallized_pre_EO, p_crystallized_pre_EC, p_crystallized_post_EO, p_crystallized_post_EC);
 
             % list conds
             mean_conds_crystallized = {};
-            mean_conds_crystallized{1} = p_crystallized_pre_EO_corrected;
-            mean_conds_crystallized{2} = p_crystallized_pre_EC_corrected;
-            mean_conds_crystallized{3} = p_crystallized_post_EO_corrected;
-            mean_conds_crystallized{4} = p_crystallized_post_EC_corrected;
+            mean_conds_crystallized{1} = p_corrected_crystallized{1};
+            mean_conds_crystallized{2} = p_corrected_crystallized{2};
+            mean_conds_crystallized{3} = p_corrected_crystallized{3};
+            mean_conds_crystallized{4} = p_corrected_crystallized{4};
 
             if i_sample == 1
                 %% Sleepiness
@@ -275,15 +271,14 @@ for i_sample = 1:length(sample)
                 [corr_sleepiness_post_EC, ~, p_sleepiness_post_EC] = run_correlation(sleepiness_post_EC, post_eyes_closed, signal_option);
     
                 % Correct for multiple comparisons
-                [p_sleepiness_pre_EO_corrected, p_sleepiness_pre_EC_corrected, p_sleepiness_post_EO_corrected, p_sleepiness_post_EC_corrected] = p_correct( ...
-                    p_sleepiness_pre_EO, p_sleepiness_pre_EC, p_sleepiness_post_EO, p_sleepiness_post_EC);
+                p_corrected_sleepiness = p_correct(p_sleepiness_pre_EO, p_sleepiness_pre_EC, p_sleepiness_post_EO, p_sleepiness_post_EC);
 
                 % list all conds
                 mean_conds_sleepiness = {};
-                mean_conds_sleepiness{1} = p_sleepiness_pre_EO_corrected;
-                mean_conds_sleepiness{2} = p_sleepiness_pre_EC_corrected;
-                mean_conds_sleepiness{3} = p_sleepiness_post_EO_corrected;
-                mean_conds_sleepiness{4} = p_sleepiness_post_EC_corrected;
+                mean_conds_sleepiness{1} = p_corrected_sleepiness{1};
+                mean_conds_sleepiness{2} = p_corrected_sleepiness{2};
+                mean_conds_sleepiness{3} = p_corrected_sleepiness{3};
+                mean_conds_sleepiness{4} = p_corrected_sleepiness{4};
 
             end
 
@@ -330,18 +325,18 @@ for i_sample = 1:length(sample)
         % Fluid
         fluid_plot = make_topoplot(conds_fluid, mean_conds_fluid, cond_labels, i_signal, sorted_data);
     
-        exportgraphics(fluid_plot, sprintf('../Results/Plots_%s/Fluid_Topoplot_%s.png', outputfolder, signal(i_signal)), 'Resolution', 600)
+        exportgraphics(fluid_plot, sprintf('../Results/Plots_%s/Fluid_Topoplot_%s.png', outputfolder, signal(i_signal)), 'Resolution', 1000)
 
         % Crystallized
         crystallized_plot = make_topoplot(conds_crystallized, mean_conds_crystallized, cond_labels, i_signal, sorted_data);
         
-        exportgraphics(crystallized_plot, sprintf('../Results/Plots_%s/Crystallized_Topoplot_%s.png', outputfolder, signal(i_signal)), 'Resolution', 600)
+        exportgraphics(crystallized_plot, sprintf('../Results/Plots_%s/Crystallized_Topoplot_%s.png', outputfolder, signal(i_signal)), 'Resolution', 1000)
         
         if i_sample == 1 
             % Sleepiness
             sleepiness_plot = make_topoplot(conds_sleepiness, mean_conds_sleepiness, cond_labels, i_signal, sorted_data);
-
-            exportgraphics(sleepiness_plot, sprintf('../Results/Plots_%s/Sleepiness_Topoplot_%s.png', outputfolder, signal(i_signal)), 'Resolution', 600)               
+            
+            exportgraphics(sleepiness_plot, sprintf('../Results/Plots_%s/Sleepiness_Topoplot_%s.png', outputfolder, signal(i_signal)), 'Resolution', 1000)               
 
         end
     

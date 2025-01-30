@@ -1,7 +1,5 @@
 function p_corrected_matices = p_correct(varargin)
 
-fprintf('Correcting for %s Test\n', num2str(numel(varargin)))
-
 p_values = cellfun(@(x) x(:), varargin, 'UniformOutput', false);
 p_values = vertcat(p_values{:});
 

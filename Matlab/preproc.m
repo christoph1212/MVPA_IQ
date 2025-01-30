@@ -22,15 +22,15 @@ NrSubsets = str2num(NrSubsets);
 ThisSubset = str2num(ThisSubset);
 
 % Set and create Folders
-%Basefolder = '/work/bay2875/MVPA_Personality/';
 Basefolder = '../';
-%Rootfolder = '/work/bay2875/RawData/task-Resting/';
 Rootfolder = '../Data/RawData';
 Datafolder = fullfile(Basefolder, 'Data', 'Preprocessed'); 
 DatafolderPreEyesClosed = fullfile(Datafolder, 'Pre', 'EyesClosed');
 DatafolderPostEyesClosed = fullfile(Datafolder, 'Post', 'EyesClosed');
+DatafolderLastEyesClosed = fullfile(Datafolder, 'Last', 'EyesClosed');
 DatafolderPreEyesOpen = fullfile(Datafolder, 'Pre', 'EyesOpen');
 DatafolderPostEyesOpen= fullfile(Datafolder, 'Post', 'EyesOpen');
+DatafolderLastEyesOpen= fullfile(Datafolder, 'Last', 'EyesOpen');
 LogFolder = fullfile(Datafolder, 'LogFiles');
 ErrorFolder = fullfile(Datafolder, 'ErrorFiles');
 if ~(isfolder(DatafolderPreEyesClosed))                
@@ -39,11 +39,17 @@ end
 if ~(isfolder(DatafolderPostEyesClosed))                
     mkdir(DatafolderPostEyesClosed)
 end
+if ~(isfolder(DatafolderLastEyesClosed))                
+    mkdir(DatafolderLastEyesClosed)
+end
 if ~(isfolder(DatafolderPreEyesOpen))                
     mkdir(DatafolderPreEyesOpen)
 end
 if ~(isfolder(DatafolderPostEyesOpen))                
     mkdir(DatafolderPostEyesOpen)
+end
+if ~(isfolder(DatafolderLastEyesOpen))                
+    mkdir(DatafolderLastEyesOpen)
 end
 
 
@@ -201,7 +207,7 @@ parfor subj = 1:ceil(length(Participants))
             if flatlined + sum(Bad_Channel_Mask) > 4
                 warning('Too many channels faulty. Dataset was excluded.')
                 savetofile(Log, fullfile(LogFolder, [i_participant '_run_' num2str(i_run) '_Log_excluded.mat'])) 
-                %continue
+                continue
             end
             
             %% 6. Separate into Eyes Open and Eyes Closed
@@ -363,13 +369,13 @@ parfor subj = 1:ceil(length(Participants))
                 if i_cond == "EO"
                     if i_run == 1
                         writecell(Average, fullfile(DatafolderPreEyesOpen, [i_participant '_pre_Average_EO.csv'])); 
-                    else
+                    elseif i_run == 2
                         writecell(Average, fullfile(DatafolderPostEyesOpen, [i_participant '_post_Average_EO.csv']));
                     end
                 else
                     if i_run == 1
                         writecell(Average, fullfile(DatafolderPreEyesClosed, [i_participant '_pre_Average_EC.csv'])); 
-                    else
+                    elseif i_run == 2
                         writecell(Average, fullfile(DatafolderPostEyesClosed, [i_participant '_post_Average_EC.csv']));
                     end
                 end

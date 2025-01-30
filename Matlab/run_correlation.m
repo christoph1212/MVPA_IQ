@@ -3,7 +3,7 @@ function [corr_matrix, mean_corr_matrix, p] = run_correlation(beh, eeg, signal)
 arguments
     beh (1,:) cell
     eeg (1,:) cell
-    signal (1,:) char {mustBeMember(signal,{'spectral','parameters'})}
+    signal (1,:) char {mustBeMember(signal,{'spectral','parameters', 'IAF'})}
 end
 
 if strcmpi(signal, 'parameters')
