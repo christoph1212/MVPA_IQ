@@ -7,6 +7,7 @@ Data/RawData/*
 Data/BehavioralData/*
 !Data/BehavioralData/.gitignore
 Data/Ready_for_DDTBOX/*
+Data/Ready_for_DDTBOX_centered/*
 
 DataValidation/*
 
