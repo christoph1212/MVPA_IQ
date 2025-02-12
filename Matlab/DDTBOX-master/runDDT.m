@@ -63,7 +63,12 @@ function runDDT(i_behav, i_signal, i_cond, i_sample, cross_val_steps, n_rep_cros
 behav = ["Fluid", "Crystallized", "Pre_Sleepiness", "Post_Sleepiness"];
 signalsEEG = ["Total", "Periodic", "Aperiodic/Parameters/Offset", "Aperiodic/Parameters/Exponent"];
 Eye_conditions = [fullfile("Pre", "EyesOpen"), fullfile("Pre", "EyesClosed"), fullfile("Post", "EyesOpen"), fullfile("Post", "EyesClosed")];
-sample = ["Full_Sample", "Male", "Female"];
+
+if Folder == "Ready_for_DDTBOX"
+    sample = ["Full_Sample", "Male", "Female"];
+elseif Folder == "Ready_for_DDTBOX_centered"
+    sample = "Full_Sample";
+end
 
 % For Cluster inputs are usually given as character
 if ischar(i_behav) | isstring(i_behav); i_behav = str2double(i_behav); end
@@ -120,30 +125,63 @@ end
 % Base directory path (where single subject EEG datasets and channel locations files are stored)
 bdir = fullfile(Datafolder, Folder, 'EEG_sorted_cond', sample(i_sample), signalsEEG(i_signal), Eye_conditions(i_cond));
 
-if strcmp(sample(i_sample), "Full_Sample")
+if Folder ~= "Ready_for_DDTBOX"
 
-    if ~(isfolder(fullfile(Resultsfolder, 'MVPA_Output_FullSample', filesep)))                
-        mkdir(fullfile(Resultsfolder, 'MVPA_Output_FullSample', filesep))
-    end
+    splits = split(Folder, '_');
+
+    if strcmp(sample(i_sample), "Full_Sample")
+
+        if ~(isfolder(fullfile(Resultsfolder, ['MVPA_Output_FullSample_' convertStringsToChars(splits(4))], filesep)))                
+            mkdir(fullfile(Resultsfolder, ['MVPA_Output_FullSample_' convertStringsToChars(splits(4))], filesep))
+        end
+        
+        output_dir = fullfile(Resultsfolder, ['MVPA_Output_FullSample_' convertStringsToChars(splits(4))], filesep);
+
+    elseif strcmp(sample(i_sample), "Male")
     
-    output_dir = fullfile(Resultsfolder, 'MVPA_Output_FullSample', filesep);
-
-elseif strcmp(sample(i_sample), "Male")
-
-    if ~(isfolder(fullfile(Resultsfolder, 'MVPA_Output_Male', filesep)))                
-        mkdir(fullfile(Resultsfolder, 'MVPA_Output_Male', filesep))
-    end
+        if ~(isfolder(fullfile(Resultsfolder, ['MVPA_Output_Male_' convertStringsToChars(splits(4))], filesep)))                
+            mkdir(fullfile(Resultsfolder, ['MVPA_Output_Male_' convertStringsToChars(splits(4))], filesep))
+        end
+        
+        output_dir = fullfile(Resultsfolder, ['MVPA_Output_Male_' convertStringsToChars(splits(4))], filesep);
     
-    output_dir = fullfile(Resultsfolder, 'MVPA_Output_Male', filesep);
-
-elseif strcmp(sample(i_sample), "Female")
-
-    if ~(isfolder(fullfile(Resultsfolder, 'MVPA_Output_Female', filesep)))                
-        mkdir(fullfile(Resultsfolder, 'MVPA_Output_Female', filesep))
-    end
+    elseif strcmp(sample(i_sample), "Female")
     
-    output_dir = fullfile(Resultsfolder, 'MVPA_Output_Female', filesep);
+        if ~(isfolder(fullfile(Resultsfolder, ['MVPA_Output_Female_' convertStringsToChars(splits(4))], filesep)))                
+            mkdir(fullfile(Resultsfolder, ['MVPA_Output_Female_' convertStringsToChars(splits(4))], filesep))
+        end
+        
+        output_dir = fullfile(Resultsfolder, ['MVPA_Output_Female_' convertStringsToChars(splits(4))], filesep);
+    
+    end
 
+else
+
+    if strcmp(sample(i_sample), "Full_Sample")
+    
+        if ~(isfolder(fullfile(Resultsfolder, 'MVPA_Output_FullSample', filesep)))                
+            mkdir(fullfile(Resultsfolder, 'MVPA_Output_FullSample', filesep))
+        end
+        
+        output_dir = fullfile(Resultsfolder, 'MVPA_Output_FullSample', filesep);
+    
+    elseif strcmp(sample(i_sample), "Male")
+    
+        if ~(isfolder(fullfile(Resultsfolder, 'MVPA_Output_Male', filesep)))                
+            mkdir(fullfile(Resultsfolder, 'MVPA_Output_Male', filesep))
+        end
+        
+        output_dir = fullfile(Resultsfolder, 'MVPA_Output_Male', filesep);
+    
+    elseif strcmp(sample(i_sample), "Female")
+    
+        if ~(isfolder(fullfile(Resultsfolder, 'MVPA_Output_Female', filesep)))                
+            mkdir(fullfile(Resultsfolder, 'MVPA_Output_Female', filesep))
+        end
+        
+        output_dir = fullfile(Resultsfolder, 'MVPA_Output_Female', filesep);
+    
+    end
 end
 
   
