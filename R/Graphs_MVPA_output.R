@@ -213,7 +213,7 @@ for (i_folders in 1:length(myFolders)) {
                   linetype = "blank", alpha=.40) + 
       theme(legend.title = element_blank(),
             legend.position="none") +
-      scale_y_continuous(breaks=seq(-.20,25,.20), limits = c(-.20,.25)) +
+      scale_y_continuous(breaks=seq(-.20,25,.20), limits = c(-.20,.27)) +
       labs(title = toString(PlotTitles[i]), y = "Correlation", 
            x = "Frequency (Hz)") +
       geom_hline(yintercept = .20, linetype = "dashed", color = "#8c8c8c") + 
@@ -318,7 +318,7 @@ for (i_folders in 1:length(myFolders)) {
     labs(y = "Frequency (Hz)")
   
   ggsave("Supp_Aperiodic_Heatmap.jpeg", heatmap_aper, 
-         dpi=300, width = 10, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3]))
+         dpi=600, width = 10, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3]))
   
   heatmap_per <- ggplot(melt(hm[,c(1,range_per)], id.vars = "Frequency"), aes(x = variable, y = Frequency, fill = value)) + 
     geom_tile(colour="white", linewidth=0.25) + 
@@ -333,7 +333,7 @@ for (i_folders in 1:length(myFolders)) {
     labs(y = "Frequency (Hz)")
   
   ggsave("Supp_Periodic_Heatmap.jpeg", heatmap_per, 
-         dpi=300, width = 10, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3]))
+         dpi=600, width = 10, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3]))
   
   heatmap_total <- ggplot(melt(hm[,c(1,range_total)], id.vars = "Frequency"), aes(x = variable, y = Frequency, fill = value)) + 
     geom_tile(colour="white", linewidth=0.25) + 
@@ -348,7 +348,7 @@ for (i_folders in 1:length(myFolders)) {
     labs(y = "Frequency (Hz)")
   
   ggsave("Supp_Total_Heatmap.jpeg", heatmap_total, 
-         dpi=300, width = 10, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3]))
+         dpi=600, width = 10, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3]))
   
   
   # Plots for each Behavioral variable and condition
@@ -356,7 +356,7 @@ for (i_folders in 1:length(myFolders)) {
     geom_line(linewidth = 0.75) +
     geom_ribbon(aes(ymin = lower.percentile, ymax = upper.percentile, fill = factor(FileID)),
                 linetype = "blank", alpha = 0.40) +
-    scale_y_continuous(breaks = seq(-0.20, 0.25, 0.20), limits = c(-0.20, 0.25)) +
+    scale_y_continuous(breaks = seq(-0.20, 0.25, 0.20), limits = c(-0.20, 0.27)) +
     geom_hline(yintercept = 0.20, linetype = "dashed", color = "#8c8c8c") +
     scale_color_manual(name = "FileID", values = fileid_colors) +
     scale_fill_manual(name = "FileID", values = fileid_colors) +
@@ -372,14 +372,14 @@ for (i_folders in 1:length(myFolders)) {
           legend.position = "none")
   
   ggsave("Supp_Grid_aper.jpeg", grid_aper, 
-         dpi=300, width = 16, height = 10, path = paste0("Results/Plots_", foldersplits[[i_folders]][3])) 
+         dpi=600, width = 16, height = 10, path = paste0("Results/Plots_", foldersplits[[i_folders]][3])) 
   
   
   grid_per <- ggplot(combined_supp_per, aes(x = Bins, y = value, color = factor(FileID))) +
     geom_line(linewidth = 0.75) +
     geom_ribbon(aes(ymin = lower.percentile, ymax = upper.percentile, fill = factor(FileID)),
                 linetype = "blank", alpha = 0.40) +
-    scale_y_continuous(breaks = seq(-0.20, 0.25, 0.20), limits = c(-0.20, 0.25)) +
+    scale_y_continuous(breaks = seq(-0.20, 0.25, 0.20), limits = c(-0.20, 0.27)) +
     geom_hline(yintercept = 0.20, linetype = "dashed", color = "#8c8c8c") +
     scale_color_manual(name = "FileID", values = fileid_colors) +
     scale_fill_manual(name = "FileID", values = fileid_colors) +
@@ -395,14 +395,14 @@ for (i_folders in 1:length(myFolders)) {
           legend.position = "none")
   
   ggsave("Supp_Grid_per.jpeg", grid_per, 
-         dpi=300, width = 16, height = 10, path = paste0("Results/Plots_", foldersplits[[i_folders]][3])) 
+         dpi=600, width = 16, height = 10, path = paste0("Results/Plots_", foldersplits[[i_folders]][3])) 
   
   
   grid_total <- ggplot(combined_supp_total, aes(x = Bins, y = value, color = factor(FileID))) +
     geom_line(linewidth = 0.75) +
     geom_ribbon(aes(ymin = lower.percentile, ymax = upper.percentile, fill = factor(FileID)),
                 linetype = "blank", alpha = 0.40) +
-    scale_y_continuous(breaks = seq(-0.20, 0.25, 0.20), limits = c(-0.20, 0.25)) +
+    scale_y_continuous(breaks = seq(-0.20, 0.25, 0.20), limits = c(-0.20, 0.27)) +
     geom_hline(yintercept = 0.20, linetype = "dashed", color = "#8c8c8c") +
     scale_color_manual(name = "FileID", values = fileid_colors) +
     scale_fill_manual(name = "FileID", values = fileid_colors) +
@@ -418,7 +418,7 @@ for (i_folders in 1:length(myFolders)) {
           legend.position = "none")
   
   ggsave("Supp_Grid_total.jpeg", grid_total, 
-         dpi=300, width = 16, height = 10, path = paste0("Results/Plots_", foldersplits[[i_folders]][3])) 
+         dpi=600, width = 16, height = 10, path = paste0("Results/Plots_", foldersplits[[i_folders]][3])) 
   
   
   # -------- Combine plots and save ------------
@@ -429,57 +429,57 @@ for (i_folders in 1:length(myFolders)) {
       myplots[[4]],myplots[[3]], myplots[[2]], myplots[[1]], 
       nrow = 2, labels = c('A', 'B', 'C', 'D'), label_size = 12)
     ggsave("cryst4plots_aper.jpeg", crystallized_aper, 
-           dpi=300, width = 8, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3])) 
+           dpi=600, width = 8, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3])) 
     
     crystallized_per <- plot_grid(
       myplots[[16]],myplots[[15]], myplots[[14]], myplots[[13]], 
       nrow = 2, labels = c('A', 'B', 'C', 'D'), label_size = 12)
     ggsave("cryst4plots_per.jpeg", crystallized_per, 
-           dpi=300, width = 8, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3])) 
+           dpi=600, width = 8, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3])) 
     
     crystallized_total <- plot_grid(
       myplots[[28]],myplots[[27]], myplots[[26]], myplots[[25]], 
       nrow = 2, labels = c('A', 'B', 'C', 'D'), label_size = 12)
     ggsave("cryst4plots_total.jpeg", crystallized_total, 
-           dpi=300, width = 8, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3]))
+           dpi=600, width = 8, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3]))
     
     # Fluid
     fluid_aper <- plot_grid(
       myplots[[8]],myplots[[7]], myplots[[6]], myplots[[5]], 
       nrow = 2, labels = c('A', 'B', 'C', 'D'), label_size = 12)
     ggsave("fluid4plots_aper.jpeg", fluid_aper, 
-           dpi=300, width = 8, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3])) 
+           dpi=600, width = 8, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3])) 
     
     fluid_per <- plot_grid(
       myplots[[20]],myplots[[19]], myplots[[18]], myplots[[17]], 
       nrow = 2, labels = c('A', 'B', 'C', 'D'), label_size = 12)
     ggsave("fluid4plots_per.jpeg", fluid_per, 
-           dpi=300, width = 8, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3])) 
+           dpi=600, width = 8, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3])) 
     
     fluid_total <- plot_grid(
       myplots[[32]],myplots[[31]], myplots[[30]], myplots[[29]], 
       nrow = 2, labels = c('A', 'B', 'C', 'D'), label_size = 12)
     ggsave("fluid4plots_total.jpeg", fluid_total, 
-           dpi=300, width = 8, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3]))
+           dpi=600, width = 8, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3]))
     
     # Sleepiness
     sleep_aper <- plot_grid(
       myplots[[12]],myplots[[11]], myplots[[10]], myplots[[9]], 
       nrow = 2, labels = c('A', 'B', 'C', 'D'), label_size = 12)
     ggsave("sleep4plots_aper.jpeg", sleep_aper, 
-           dpi=300, width = 8, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3])) 
+           dpi=600, width = 8, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3])) 
     
     sleep_per <- plot_grid(
       myplots[[24]],myplots[[23]], myplots[[22]], myplots[[21]], 
       nrow = 2, labels = c('A', 'B', 'C', 'D'), label_size = 12)
     ggsave("sleep4plots_per.jpeg", sleep_per, 
-           dpi=300, width = 8, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3])) 
+           dpi=600, width = 8, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3])) 
     
     sleep_total <- plot_grid(
       myplots[[36]],myplots[[35]], myplots[[34]], myplots[[33]], 
       nrow = 2, labels = c('A', 'B', 'C', 'D'), label_size = 12)
     ggsave("sleep4plots_total.jpeg", sleep_total, 
-           dpi=300, width = 8, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3]))
+           dpi=600, width = 8, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3]))
     
   } else {
     # Crystallized
@@ -487,38 +487,38 @@ for (i_folders in 1:length(myFolders)) {
       myplots[[4]],myplots[[3]], myplots[[2]], myplots[[1]], 
       nrow = 2, labels = c('A', 'B', 'C', 'D'), label_size = 12)
     ggsave("cryst4plots_aper.jpeg", crystallized_aper, 
-           dpi=300, width = 8, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3])) 
+           dpi=600, width = 8, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3])) 
     
     crystallized_per <- plot_grid(
       myplots[[12]],myplots[[11]], myplots[[10]], myplots[[9]], 
       nrow = 2, labels = c('A', 'B', 'C', 'D'), label_size = 12)
     ggsave("cryst4plots_per.jpeg", crystallized_per, 
-           dpi=300, width = 8, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3])) 
+           dpi=600, width = 8, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3])) 
     
     crystallized_total <- plot_grid(
       myplots[[20]],myplots[[19]], myplots[[18]], myplots[[17]], 
       nrow = 2, labels = c('A', 'B', 'C', 'D'), label_size = 12)
     ggsave("cryst4plots_total.jpeg", crystallized_total, 
-           dpi=300, width = 8, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3])) 
+           dpi=600, width = 8, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3])) 
     
     # Fluid
     fluid_aper <- plot_grid(
       myplots[[8]],myplots[[7]], myplots[[6]], myplots[[5]], 
       nrow = 2, labels = c('A', 'B', 'C', 'D'), label_size = 12)
     ggsave("fluid4plots_aper.jpeg", fluid_aper, 
-           dpi=300, width = 8, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3])) 
+           dpi=600, width = 8, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3])) 
     
     fluid_per <- plot_grid(
       myplots[[16]],myplots[[15]], myplots[[14]], myplots[[13]], 
       nrow = 2, labels = c('A', 'B', 'C', 'D'), label_size = 12)
     ggsave("fluid4plots_per.jpeg", fluid_per, 
-           dpi=300, width = 8, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3])) 
+           dpi=600, width = 8, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3])) 
     
     fluid_total <- plot_grid(
       myplots[[24]],myplots[[23]], myplots[[22]], myplots[[21]], 
       nrow = 2, labels = c('A', 'B', 'C', 'D'), label_size = 12)
     ggsave("fluid4plots_total.jpeg", fluid_total, 
-           dpi=300, width = 8, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3])) 
+           dpi=600, width = 8, height = 5, path = paste0("Results/Plots_", foldersplits[[i_folders]][3])) 
     
   }
   
@@ -768,7 +768,7 @@ for (i_folders in 1:length(myFolders)) {
       geom_line(linewidth = 0.75) +
       geom_ribbon(aes(ymin = lower.percentile, ymax = upper.percentile, fill = behav),
                   linetype = "blank", alpha = 0.40) +
-      scale_y_continuous(breaks = seq(-0.20, 0.25, 0.20), limits = c(-0.20, 0.25)) +
+      scale_y_continuous(breaks = seq(-0.20, 0.25, 0.20), limits = c(-0.20, 0.27)) +
       geom_hline(yintercept = 0.20, linetype = "dashed", color = "#8c8c8c") +
       scale_color_manual(name = "Behav", values = fileid_colors) +
       scale_fill_manual(name = "Behav", values = fileid_colors) +
@@ -782,7 +782,7 @@ for (i_folders in 1:length(myFolders)) {
             legend.position = "none")
     
     ggsave("Mean_Grid.jpeg", mean_plot, 
-           dpi=300, width = 16, height = 10, path = paste0("Results/Plots_", foldersplits[[i_folders]][3]))
+           dpi=600, width = 16, height = 10, path = paste0("Results/Plots_", foldersplits[[i_folders]][3]))
     
   } else {
     
@@ -937,7 +937,7 @@ for (i_folders in 1:length(myFolders)) {
       geom_line(linewidth = 0.75) +
       geom_ribbon(aes(ymin = lower.percentile, ymax = upper.percentile, fill = behav),
                   linetype = "blank", alpha = 0.40) +
-      scale_y_continuous(breaks = seq(-0.20, 0.25, 0.20), limits = c(-0.20, 0.25)) +
+      scale_y_continuous(breaks = seq(-0.20, 0.25, 0.20), limits = c(-0.20, 0.27)) +
       geom_hline(yintercept = 0.20, linetype = "dashed", color = "#8c8c8c") +
       scale_color_manual(name = "Behav", values = fileid_colors) +
       scale_fill_manual(name = "Behav", values = fileid_colors) +
@@ -951,7 +951,7 @@ for (i_folders in 1:length(myFolders)) {
             legend.position = "none")
     
     ggsave("Mean_Grid.jpeg", mean_plot, 
-           dpi=300, width = 16, height = 10, path = paste0("Results/Plots_", foldersplits[[i_folders]][3]))
+           dpi=600, width = 16, height = 10, path = paste0("Results/Plots_", foldersplits[[i_folders]][3]))
     
   }
 }
