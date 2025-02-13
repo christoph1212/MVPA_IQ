@@ -1,5 +1,3 @@
-# :construction: This Repository is not complete yet! :construction:
-
 # Welcome!
 This is the GitHub Repository for the study "Sleepiness but neither fluid nor crystallized intelligence can be predicted from resting-state EEG – Evidence from the large scale CoScience EEG-Personality Project". This project is preregistered on [OSF](https://doi.org/10.17605/OSF.IO/JB64Z). 
 
