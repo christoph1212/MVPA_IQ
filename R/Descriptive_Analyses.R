@@ -4,7 +4,7 @@
 
 ## Load relevant packages for further analysis
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(psych, apaTables, tidyverse, effsize, ggsignif, ggpubr, psychometric, )
+pacman::p_load(psych, apaTables, tidyverse, effsize, ggsignif, ggpubr, psychometric, stringr)
 
 options(scipen=999)
 
@@ -59,6 +59,65 @@ behav_fullSample %>%
 describe(behav_fullSample)
 
 describeBy(behav_fullSample, group = behav_fullSample$Gender)
+
+# Add Sociodemographic Data
+
+socio_table = read.csv("Data/SocioDemographics.txt", header = T, na.strings = c("", "NA"))
+
+## Convert columns to factors and rename levels
+socio_table$Gender <- as.factor(socio_table$Gender)
+socio_table$HormonalContraceptives <- as.factor(socio_table$HormonalContraceptives)
+socio_table$Ethnicity <- as.factor(socio_table$Ethnicity)
+socio_table$MaritalStatus <- as.factor(socio_table$MaritalStatus)
+socio_table$Occupancy <- as.factor(socio_table$Occupancy)
+socio_table$HighestDegree <- as.factor(socio_table$HighestDegree)
+socio_table$monthlyBruttoIncome <- as.factor(socio_table$monthlyBruttoIncome)
+
+levels(socio_table$Gender)[levels(socio_table$Gender) == 1] <- "Female"
+levels(socio_table$Gender)[levels(socio_table$Gender) == 2] <- "Male"
+levels(socio_table$HormonalContraceptives)[levels(socio_table$HormonalContraceptives) == 1] <- "Yes"
+levels(socio_table$HormonalContraceptives)[levels(socio_table$HormonalContraceptives) == 2] <- "No"
+levels(socio_table$Ethnicity)[levels(socio_table$Ethnicity) == 1] <- "European"
+levels(socio_table$Ethnicity)[levels(socio_table$Ethnicity) == 2] <- "Arabic"
+levels(socio_table$Ethnicity)[levels(socio_table$Ethnicity) == 3] <- "African"
+levels(socio_table$Ethnicity)[levels(socio_table$Ethnicity) == 4] <- "Asian"
+levels(socio_table$Ethnicity)[levels(socio_table$Ethnicity) == 5] <- "Hisp"
+levels(socio_table$Ethnicity)[levels(socio_table$Ethnicity) == 6] <- "other"
+levels(socio_table$MaritalStatus)[levels(socio_table$MaritalStatus) == 1] <- "Single"
+levels(socio_table$MaritalStatus)[levels(socio_table$MaritalStatus) == 2] <- "Relationship"
+levels(socio_table$MaritalStatus)[levels(socio_table$MaritalStatus) == 3] <- "legal Partnership"
+levels(socio_table$MaritalStatus)[levels(socio_table$MaritalStatus) == 4] <- "Divorced"
+levels(socio_table$MaritalStatus)[levels(socio_table$MaritalStatus) == 5] <- "Widowed"
+levels(socio_table$Occupancy)[levels(socio_table$Occupancy) == 1] <- "Working"
+levels(socio_table$Occupancy)[levels(socio_table$Occupancy) == 2] <- "Student"
+levels(socio_table$Occupancy)[levels(socio_table$Occupancy) == 3] <- "unemployed"
+levels(socio_table$HighestDegree)[levels(socio_table$HighestDegree) == 1] <- "Hauptschule"
+levels(socio_table$HighestDegree)[levels(socio_table$HighestDegree) == 2] <- "Realschule"
+levels(socio_table$HighestDegree)[levels(socio_table$HighestDegree) == 3] <- "Abitur"
+levels(socio_table$HighestDegree)[levels(socio_table$HighestDegree) == 4] <- "Hochschulabschluss"
+levels(socio_table$HighestDegree)[levels(socio_table$HighestDegree) == 5] <- "Promotion"
+levels(socio_table$monthlyBruttoIncome)[levels(socio_table$monthlyBruttoIncome) == 1] <- "<500"
+levels(socio_table$monthlyBruttoIncome)[levels(socio_table$monthlyBruttoIncome) == 2] <- "500-1000"
+levels(socio_table$monthlyBruttoIncome)[levels(socio_table$monthlyBruttoIncome) == 3] <- "1000-2000"
+levels(socio_table$monthlyBruttoIncome)[levels(socio_table$monthlyBruttoIncome) == 4] <- "2000-3000"
+levels(socio_table$monthlyBruttoIncome)[levels(socio_table$monthlyBruttoIncome) == 5] <- ">3000"
+levels(socio_table$monthlyBruttoIncome)[levels(socio_table$monthlyBruttoIncome) == 6] <- "no info"
+
+# Filter included participants
+socio_fullSample <- socio_table %>% 
+  filter(ID %in% behav_fullSample$ID)
+
+# Calculate descriptive statistics of the sample demographics
+# absolute Values
+table(socio_fullSample$HighestDegree)
+table(socio_fullSample$Occupancy)
+table(socio_fullSample$Ethnicity)
+
+# relative Values
+prop.table(table(socio_fullSample$HighestDegree))
+prop.table(table(socio_fullSample$Occupancy))
+prop.table(table(socio_fullSample$Ethnicity))
+
 
 # Compare Pre and Post Data
 t.test(behav_fullSample$Exhausted_Post, behav_fullSample$Exhausted_Pre, paired = TRUE)
@@ -127,13 +186,46 @@ selectivity_corrected <- rangeCorrection(selectivity, sdu = 3.43, sdr = sd(rowSu
 
 omega(IST_filtered[,22:105])
 
-# Plot the Data for Tiredness, Exhaustion, Sleepiness
-# Spaltennamen für Task_Sleepiness umbenennen, damit Pre/Post am Ende stehen
+# Plot the Data for gf, gc, Tiredness, Exhaustion, Sleepiness
+
+# Prep for g Plots
+data_long <- behav_fullSample %>%
+  dplyr::select(gf_score, gc_score_z, Pre_Task_Sleepiness, Post_Task_Sleepiness) %>%
+  pivot_longer(cols = everything(), names_to = "Variable", values_to = "Score")
+
+data_long$Variable <- factor(data_long$Variable, levels = c("gf_score", "gc_score_z",
+                                                            "Pre_Task_Sleepiness",
+                                                            "Post_Task_Sleepiness"))
+
+data_hist <- ggplot(data_long, aes(x = Score, fill = Variable)) +
+  geom_histogram(color = "white") +
+  facet_wrap(~Variable, scales = "free_x",
+             labeller = as_labeller(c(
+               gf_score = "Fluid Intelligence",
+               gc_score_z = "Crystallized Intelligence",
+               Pre_Task_Sleepiness = "Pre-Task Sleepiness",
+               Post_Task_Sleepiness = "Post-Task Sleepiness"
+             ))) +
+  scale_fill_manual(values = c("gf_score" = "#FFC000", "gc_score_z" = "#4F81BD",
+                               "Pre_Task_Sleepiness" = "#D74E2D", "Post_Task_Sleepiness" = "#D74E2D")) +
+  labs(x = element_blank(), 
+       y = element_blank()) +
+  theme(axis.text.x = element_text(size = 18),
+        axis.text.y = element_text(size = 18),
+        axis.title = element_text(size = 20),
+        strip.text = element_text(size = 20),
+        legend.title = element_blank(), 
+        legend.position = "none")
+
+ggsave("Histograms.jpeg", data_hist, 
+       dpi=600, width = 16, height = 10, path = "Results/Plots_FullSample")
+
+
+
 behav_fullSample <- behav_fullSample %>%
   rename(Sleepiness_Pre = Pre_Task_Sleepiness,
          Sleepiness_Post = Post_Task_Sleepiness)
 
-# Jetzt ins lange Format umwandeln
 behav_long <- behav_fullSample %>%
   pivot_longer(cols = c(Tired_Pre, Tired_Post, Exhausted_Pre, Exhausted_Post, 
                         Sleepiness_Pre, Sleepiness_Post),
@@ -141,10 +233,11 @@ behav_long <- behav_fullSample %>%
                names_sep = "_",
                values_to = "Score")
 
-# Um die Zeitpunkte und Maße zu ordnen
+
 behav_long$Time <- factor(behav_long$Time, levels = c("Pre", "Post"))
 behav_long$Measure <- factor(behav_long$Measure, levels = c("Tired", "Exhausted", "Sleepiness"))
 
+# Prep for remaining Plots
 # Tiredness
 tired_plot <- ggplot(behav_long %>% filter(Measure == "Tired"), aes(x = Time, y = Score)) +
   geom_violin(aes(fill = Time), alpha = 0.5) + 
@@ -188,3 +281,36 @@ sleepiness_plot <- ggplot(behav_long %>% filter(Measure == "Sleepiness"), aes(x 
 sleepiness_plot
 
 ggarrange(tired_plot, exhaustion_plot, sleepiness_plot, nrow = 1)
+
+
+
+logs <- read.csv("Data/Preprocessed/LogFiles/LogFiles_all.csv")
+
+included_logs <- logs %>%
+  filter(!str_detect(ID, "excluded"))
+
+mean_ICA_EO <- mean(included_logs$ICA_Bad_Components_EO, na.rm = T)
+mean_ICA_EC <- mean(included_logs$ICA_Bad_Components_EC, na.rm = T)
+
+included_logs$Bad_Channel_Count <- sapply(strsplit(ifelse(is.na(included_logs$Bad_Channels), "", included_logs$Bad_Channels), ","), length)
+mean_BadC <- mean(included_logs$Bad_Channel_Count)
+
+mean_Epochs_EO <- mean(included_logs$Epochs_EO, na.rm = T)
+mean_Epochs_EC <- mean(included_logs$Epochs_EC, na.rm = T)
+
+
+# -----------------------------------
+# -------- Preproc Log Data ---------
+# -----------------------------------
+
+mean_ICA_EO <- mean(logs$ICA_Bad_Components_EO, na.rm = T)
+mean_ICA_EC <- mean(logs$ICA_Bad_Components_EC, na.rm = T)
+
+
+mean_Epochs_EO <- mean(logs$Epochs_EO, na.rm = T)
+mean_Epochs_EC <- mean(logs$Epochs_EC, na.rm = T)
+
+
+logs$Bad_Channel_Count <- sapply(strsplit(ifelse(is.na(logs$Bad_Channels), "", logs$Bad_Channels), ","), length)
+mean_BadC <- mean(logs$Bad_Channel_Count)
+
