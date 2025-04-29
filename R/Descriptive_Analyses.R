@@ -4,7 +4,8 @@
 
 ## Load relevant packages for further analysis
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(psych, apaTables, tidyverse, effsize, ggsignif, ggpubr, psychometric, stringr)
+pacman::p_load(psych, apaTables, tidyverse, effsize, ggsignif, ggpubr, psychometric, 
+               stringr, ggstance, ggh4x)
 
 options(scipen=999)
 
@@ -188,26 +189,25 @@ omega(IST_filtered[,22:105])
 
 # Plot the Data for gf, gc, Tiredness, Exhaustion, Sleepiness
 
-# Prep for g Plots
-data_long <- behav_fullSample %>%
-  dplyr::select(gf_score, gc_score_z, Pre_Task_Sleepiness, Post_Task_Sleepiness) %>%
+# Prep for distribution Plots
+# gf
+data_long_gf <- behav_fullSample %>%
+  dplyr::select(gf_score) %>%
   pivot_longer(cols = everything(), names_to = "Variable", values_to = "Score")
 
-data_long$Variable <- factor(data_long$Variable, levels = c("gf_score", "gc_score_z",
-                                                            "Pre_Task_Sleepiness",
-                                                            "Post_Task_Sleepiness"))
+data_long_gf$Variable <- factor(data_long_gf$Variable, levels = c("gf_score"))
 
-data_hist <- ggplot(data_long, aes(x = Score, fill = Variable)) +
-  geom_histogram(color = "white") +
+data_hist_gf <- ggplot(data_long_gf, aes(x = Score, fill = Variable)) +
+  geom_histogram(color = "white", binwidth = 1) +
+  geom_boxplot(aes(y = 0), width = 16, color = "black", alpha = 0.6, position = position_nudge(y = -12)) +
   facet_wrap(~Variable, scales = "free_x",
-             labeller = as_labeller(c(
-               gf_score = "Fluid Intelligence",
-               gc_score_z = "Crystallized Intelligence",
-               Pre_Task_Sleepiness = "Pre-Task Sleepiness",
-               Post_Task_Sleepiness = "Post-Task Sleepiness"
-             ))) +
-  scale_fill_manual(values = c("gf_score" = "#FFC000", "gc_score_z" = "#4F81BD",
-                               "Pre_Task_Sleepiness" = "#D74E2D", "Post_Task_Sleepiness" = "#D74E2D")) +
+             labeller = as_labeller(c(gf_score = "Fluid Intelligence"))) +
+  scale_fill_manual(values = c("gf_score" = "#FFC000")) +
+  ggh4x::facetted_pos_scales(
+    x = list(
+      scale_x_continuous(limits = c(0, 20))
+    )
+  ) +
   labs(x = element_blank(), 
        y = element_blank()) +
   theme(axis.text.x = element_text(size = 18),
@@ -217,11 +217,90 @@ data_hist <- ggplot(data_long, aes(x = Score, fill = Variable)) +
         legend.title = element_blank(), 
         legend.position = "none")
 
-ggsave("Histograms.jpeg", data_hist, 
+# gc
+data_long_gc <- behav_fullSample %>%
+  dplyr::select(gc_score) %>%
+  pivot_longer(cols = everything(), names_to = "Variable", values_to = "Score")
+
+data_long_gc$Variable <- factor(data_long_gc$Variable, levels = c("gc_score"))
+
+data_hist_gc <- ggplot(data_long_gc, aes(x = Score, fill = Variable)) +
+  geom_histogram(color = "white") +
+  geom_boxplot(aes(y = 0), width = 13, color = "black", alpha = 0.6, position = position_nudge(y = -9)) +
+  facet_wrap(~Variable, scales = "free_x",
+             labeller = as_labeller(c(gc_score = "Crystallized Intelligence"))) +
+  scale_fill_manual(values = c("gc_score" = "#4F81BD")) +
+  ggh4x::facetted_pos_scales(
+    x = list(
+      scale_x_continuous(limits = c(0, 80))
+    )
+  ) +
+  labs(x = element_blank(), 
+       y = element_blank()) +
+  theme(axis.text.x = element_text(size = 18),
+        axis.text.y = element_text(size = 18),
+        axis.title = element_text(size = 20),
+        strip.text = element_text(size = 20),
+        legend.title = element_blank(), 
+        legend.position = "none")
+
+# Pre-Task Sleepiness
+data_long_s_pre <- behav_fullSample %>%
+  dplyr::select(Pre_Task_Sleepiness) %>%
+  pivot_longer(cols = everything(), names_to = "Variable", values_to = "Score")
+
+data_long_s_pre$Variable <- factor(data_long_s_pre$Variable, levels = c("Pre_Task_Sleepiness"))
+
+data_hist_s_pre <- ggplot(data_long_s_pre, aes(x = Score, fill = Variable)) +
+  geom_histogram(color = "white", binwidth = 0.5) +
+  geom_boxplot(aes(y = 0), width = 30, color = "black", alpha = 0.6, position = position_nudge(y = -21)) +
+  facet_wrap(~Variable, scales = "free_x",
+             labeller = as_labeller(c(
+               Pre_Task_Sleepiness = "Pre-Task Sleepiness"
+             ))) +
+  scale_fill_manual(values = c("Pre_Task_Sleepiness" = "#D74E2D")) +
+  labs(x = element_blank(), 
+       y = element_blank()) +
+  theme(axis.text.x = element_text(size = 18),
+        axis.text.y = element_text(size = 18),
+        axis.title = element_text(size = 20),
+        strip.text = element_text(size = 20),
+        legend.title = element_blank(), 
+        legend.position = "none")
+
+# Post-Task Sleepiness
+data_long_s_post <- behav_fullSample %>%
+  dplyr::select(Post_Task_Sleepiness) %>%
+  pivot_longer(cols = everything(), names_to = "Variable", values_to = "Score")
+
+data_long_s_post$Variable <- factor(data_long_s_post$Variable, levels = c("Post_Task_Sleepiness"))
+
+data_hist_s_post <- ggplot(data_long_s_post, aes(x = Score, fill = Variable)) +
+  geom_histogram(color = "white", binwidth = 0.5) +
+  geom_boxplot(aes(y = 0), width = 22, color = "black", alpha = 0.6, position = position_nudge(y = -16)) +
+  facet_wrap(~Variable, scales = "free_x",
+             labeller = as_labeller(c(
+               Post_Task_Sleepiness = "Post-Task Sleepiness"
+             ))) +
+  scale_fill_manual(values = c("Post_Task_Sleepiness" = "#D74E2D")) +
+  labs(x = element_blank(), 
+       y = element_blank()) +
+  theme(axis.text.x = element_text(size = 18),
+        axis.text.y = element_text(size = 18),
+        axis.title = element_text(size = 20),
+        strip.text = element_text(size = 20),
+        legend.title = element_blank(), 
+        legend.position = "none")
+
+# Pack them together
+library(patchwork)
+
+hist_boxplt <- (data_hist_gf | data_hist_gc) / (data_hist_s_pre | data_hist_s_post)
+ggsave("Histogram_Boxplt.jpeg", hist_boxplt, 
        dpi=600, width = 16, height = 10, path = "Results/Plots_FullSample")
 
 
-
+# Prep for remaining Plots
 behav_fullSample <- behav_fullSample %>%
   rename(Sleepiness_Pre = Pre_Task_Sleepiness,
          Sleepiness_Post = Post_Task_Sleepiness)
@@ -237,7 +316,6 @@ behav_long <- behav_fullSample %>%
 behav_long$Time <- factor(behav_long$Time, levels = c("Pre", "Post"))
 behav_long$Measure <- factor(behav_long$Measure, levels = c("Tired", "Exhausted", "Sleepiness"))
 
-# Prep for remaining Plots
 # Tiredness
 tired_plot <- ggplot(behav_long %>% filter(Measure == "Tired"), aes(x = Time, y = Score)) +
   geom_violin(aes(fill = Time), alpha = 0.5) + 
