@@ -1,7 +1,7 @@
 # Welcome!
-This is the GitHub Repository for the study "Sleepiness but neither fluid nor crystallized intelligence can be predicted from resting-state EEG – Evidence from the large scale CoScience EEG-Personality Project". This project is preregistered on [OSF](https://doi.org/10.17605/OSF.IO/JB64Z). 
+This is the GitHub Repository for the study "[Sleepiness but neither fluid nor crystallized intelligence can be predicted from resting-state EEG – Evidence from the large scale CoScience EEG-Personality Project](https://doi.org/10.3758/s13415-025-01323-y)". This project is preregistered on [OSF](https://doi.org/10.17605/OSF.IO/JB64Z).
 
-You will find all the code in the respective folders. To reproduce our findings (analysis is not finished yet), simply clone the repository and request the data from the authors.
+You will find all the code in the respective folders. To reproduce our findings, simply clone the repository and request the data from the authors.
 
 ## Analysis Pipeline
 Make sure to stay in the directory of the script you run (e.g. Matlab script $\rightarrow$ Matlab directory), otherwise the script will have problems finding the other files.
